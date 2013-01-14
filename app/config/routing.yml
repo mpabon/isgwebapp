@@ -1,0 +1,4 @@
+isg_project_submission_app:
+    resource: "@ISGProjectSubmissionAppBundle/Resources/config/routing.yml"
+    prefix:   /
+

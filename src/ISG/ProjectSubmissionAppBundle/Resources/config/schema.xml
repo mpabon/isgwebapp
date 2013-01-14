@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="ISG\ProjectSubmissionAppBundle\Model" defaultIdMethod="native">
+    <table name="User">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_email" type="varchar" primaryString="true" required="true" size="100" />
+        <column name="user_firstname" type="varchar" primaryString="true" required="true" size="100" />
+        <column name="user_lastname" type="varchar" primaryString="true" required="true" size="100" />
+        <column name="password" type="varchar" primaryString="true" required="true" size="100" />        
+        <column name="supervisor_quota_1" type="integer"  required="false" defaultValue="0" />
+        <column name="role_id" type="integer" />
+        <column name="status" type="varchar" primaryString="true" required="true" size="50" />
+        <column name="project_year" type="varchar" primaryString="true" required="true" size="4" />
+        <column name="department" type="varchar" primaryString="true" required="true" size="50" />
+        <column name="created_by" type="integer" required="false" defaultValue="NULL" />
+        <column name="created_on" type="timestamp" required="false" defaultValue="NULL" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" required="false" />
+        <column name="supervisor_quota_2" type="integer"  required="false" defaultValue="0" />
+        <column name="quota_used_1" type="integer" defaultValue="0" />
+        <column name="quota_used_2" type="integer" defaultValue="0" />        
+        <foreign-key foreignTable="Role" onDelete="cascade" onUpdate="cascade">
+         <reference local="role_id" foreign="id" />    
+        </foreign-key>
+    </table>
+    <table name="Role">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="status" type="varchar" primaryString="true" required="true" size="50"/>
+        <column name="description" type="varchar" primaryString="true" required="true" size="50"/>
+        <column name="valid_from" type="timestamp" />
+        <column name="valid_until" type="timestamp" />
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" />      
+    </table>
+    <table name="Profile">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" primaryString="true" required="true" size="50" />
+        <column name="description" type="varchar" primaryString="true" required="true" size="50" />
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" />      
+    </table>
+    <table name="ProfileUser">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="profile_id" type="integer" required="true" primaryKey="true" />
+        <column name="user_id" type="integer" required="true" primaryKey="true" />
+        <column name="start_date" type="timestamp" required="true" />
+        <column name="end_date" type="timestamp" required="true" />
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" />  
+        <foreign-key foreignTable="User" onDelete="cascade">
+          <reference local="user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="Profile" onDelete="cascade">
+          <reference local="profile_id" foreign="id" />
+        </foreign-key>
+    </table>
+    <table name="Project">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_id" type="integer" required="true" primaryKey="true" />
+        <column name="supervisor_id" type="integer" required="true" />
+        <column name="physical_copy_submitted" type="tinyint" defaultValue="0" />
+        <column name="alternate_email_id" type="integer" />
+        <column name="title" type="varchar" required="true" primaryString="true" size="100" />
+        <column name="problem_statement" type="longvarchar" primaryString="true" required="true"/>
+        <column name="supervisor_comments" type="longvarchar" primaryString="true" required="true" />
+        <column name="status" type="varchar" primaryString="true" required="true" size="50" />
+        <column name="second_marker_id" type="integer" defaultValue="0" />
+        <column name="third_marker_id" type="integer" defaultValue="0" />
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" />          
+        <foreign-key foreignTable="User" onDelete="cascade">
+          <reference local="user_id" foreign="id" />
+        </foreign-key>
+    </table>
+    <table name="Email">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_id" type="integer" required="true" primaryKey="true" />
+        <column name="project_id" type="integer" required="true" primaryKey="true" />
+        <column name="from" type="varchar" required="true" primaryString="true" size="100" />
+        <column name="to" type="varchar" required="true" primaryString="true" size="100"/>
+        <column name="subject" type="varchar" required="true" primaryString="true" size="100" />
+        <column name="body" type="varchar" required="true" primaryString="true" size="100"/>
+        <column name="sent_date" type="timestamp" />
+        <column name="resent_count" type="integer" defaultValue="0" /> 
+        <foreign-key foreignTable="User" onDelete="none">
+          <reference local="user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="Project" onDelete="none">
+          <reference local="project_id" foreign="id" />
+        </foreign-key>       
+    </table>
+    <table name="ProjectMark">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_id" type="integer" required="true" primaryKey="true" />
+        <column name="evaluator_id" type="integer" required="true" primaryKey="true" />
+        <column name="project_id" type="integer" required="true" primaryKey="true" />
+        <column name="total_marks" type="integer" required="true" />
+        <column name="mark_1" type="integer" required="true" />
+        <column name="mark_2" type="integer" required="true" />
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" />  
+        <foreign-key foreignTable="User" onDelete="none">
+          <reference local="user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="Project" onDelete="none">
+          <reference local="project_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="User" onDelete="none">
+          <reference local="evaluator_id" foreign="id" />
+        </foreign-key>           
+    </table>
+    <table name="ProjectDocument" >
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_id" type="integer" required="true" primaryKey="true" />
+        <column name="project_id" type="integer" required="true" primaryKey="true" />
+        <column name="version" type="varchar" required="true" primaryString="true" size="20"/>
+        <column name="type" type="varchar" required="true" primaryString="true" size="20"/>
+        <column name="name" type="varchar" required="true" primaryString="true" size="100"/>
+        <column name="status" type="varchar" required="true" primaryString="true" size="50"/>
+        <column name="document" type="varchar" required="true" primaryString="true" size="100"/>       
+        <column name="created_by" type="integer" required="false" />
+        <column name="created_on" type="timestamp" required="false" />
+        <column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" /> 
+        <foreign-key foreignTable="User" onDelete="none">
+          <reference local="user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="Project" onDelete="none">
+          <reference local="project_id" foreign="id" />
+        </foreign-key>            
+    </table>
+    <table name="Register">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="100"  required="true"/>
+        <column name="updated_at" type="timestamp" />
+    </table>
+</database>

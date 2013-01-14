@@ -1,0 +1,7 @@
+parameters:
+#    isg_project_submission_app.example.class: ISG\ProjectSubmissionAppBundle\Example
+
+services:
+#    isg_project_submission_app.example:
+#        class: %isg_project_submission_app.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
