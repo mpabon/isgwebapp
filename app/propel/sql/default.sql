@@ -35,7 +35,7 @@ CREATE TABLE `User`
         REFERENCES `Role` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- Role
@@ -55,7 +55,7 @@ CREATE TABLE `Role`
     `modified_by` INTEGER,
     `modified_on` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- Profile
@@ -73,7 +73,7 @@ CREATE TABLE `Profile`
     `modified_by` INTEGER,
     `modified_on` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- ProfileUser
@@ -103,7 +103,7 @@ CREATE TABLE `ProfileUser`
         FOREIGN KEY (`profile_id`)
         REFERENCES `Profile` (`id`)
         ON DELETE CASCADE
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- Project
@@ -134,7 +134,7 @@ CREATE TABLE `Project`
         FOREIGN KEY (`user_id`)
         REFERENCES `User` (`id`)
         ON DELETE CASCADE
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- Email
@@ -162,7 +162,7 @@ CREATE TABLE `Email`
     CONSTRAINT `Email_FK_2`
         FOREIGN KEY (`project_id`)
         REFERENCES `Project` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- ProjectMark
@@ -196,7 +196,7 @@ CREATE TABLE `ProjectMark`
     CONSTRAINT `ProjectMark_FK_3`
         FOREIGN KEY (`evaluator_id`)
         REFERENCES `User` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- ProjectDocument
@@ -227,7 +227,7 @@ CREATE TABLE `ProjectDocument`
     CONSTRAINT `ProjectDocument_FK_2`
         FOREIGN KEY (`project_id`)
         REFERENCES `Project` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 -- ---------------------------------------------------------------------
 -- Register
@@ -241,7 +241,7 @@ CREATE TABLE `Register`
     `name` VARCHAR(100) NOT NULL,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
