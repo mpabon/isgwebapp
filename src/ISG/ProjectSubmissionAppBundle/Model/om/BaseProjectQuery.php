@@ -861,7 +861,7 @@ abstract class BaseProjectQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ProjectPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(ProjectPeer::USER_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
         }

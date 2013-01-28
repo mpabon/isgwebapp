@@ -36,9 +36,6 @@ class UserController extends Controller {
     	
     }
     
-    public function editAction() {
-    	
-    }
     
     public function deleteAction() {
     	

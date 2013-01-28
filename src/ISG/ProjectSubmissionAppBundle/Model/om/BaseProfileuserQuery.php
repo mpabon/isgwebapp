@@ -625,7 +625,7 @@ abstract class BaseProfileuserQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ProfileuserPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(ProfileuserPeer::USER_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
         }

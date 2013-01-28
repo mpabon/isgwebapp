@@ -32,13 +32,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 18;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 18;
 
     /** the column name for the ID field */
     const ID = 'User.ID';
@@ -54,6 +54,9 @@ abstract class BaseUserPeer
 
     /** the column name for the PASSWORD field */
     const PASSWORD = 'User.PASSWORD';
+
+    /** the column name for the SALT field */
+    const SALT = 'User.SALT';
 
     /** the column name for the SUPERVISOR_QUOTA_1 field */
     const SUPERVISOR_QUOTA_1 = 'User.SUPERVISOR_QUOTA_1';
@@ -110,12 +113,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserEmail', 'UserFirstname', 'UserLastname', 'Password', 'SupervisorQuota1', 'RoleId', 'Status', 'ProjectYear', 'Department', 'CreatedBy', 'CreatedOn', 'ModifiedBy', 'ModifiedOn', 'SupervisorQuota2', 'QuotaUsed1', 'QuotaUsed2', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userEmail', 'userFirstname', 'userLastname', 'password', 'supervisorQuota1', 'roleId', 'status', 'projectYear', 'department', 'createdBy', 'createdOn', 'modifiedBy', 'modifiedOn', 'supervisorQuota2', 'quotaUsed1', 'quotaUsed2', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USER_EMAIL, UserPeer::USER_FIRSTNAME, UserPeer::USER_LASTNAME, UserPeer::PASSWORD, UserPeer::SUPERVISOR_QUOTA_1, UserPeer::ROLE_ID, UserPeer::STATUS, UserPeer::PROJECT_YEAR, UserPeer::DEPARTMENT, UserPeer::CREATED_BY, UserPeer::CREATED_ON, UserPeer::MODIFIED_BY, UserPeer::MODIFIED_ON, UserPeer::SUPERVISOR_QUOTA_2, UserPeer::QUOTA_USED_1, UserPeer::QUOTA_USED_2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_EMAIL', 'USER_FIRSTNAME', 'USER_LASTNAME', 'PASSWORD', 'SUPERVISOR_QUOTA_1', 'ROLE_ID', 'STATUS', 'PROJECT_YEAR', 'DEPARTMENT', 'CREATED_BY', 'CREATED_ON', 'MODIFIED_BY', 'MODIFIED_ON', 'SUPERVISOR_QUOTA_2', 'QUOTA_USED_1', 'QUOTA_USED_2', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_email', 'user_firstname', 'user_lastname', 'password', 'supervisor_quota_1', 'role_id', 'status', 'project_year', 'department', 'created_by', 'created_on', 'modified_by', 'modified_on', 'supervisor_quota_2', 'quota_used_1', 'quota_used_2', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserEmail', 'UserFirstname', 'UserLastname', 'Password', 'Salt', 'SupervisorQuota1', 'RoleId', 'Status', 'ProjectYear', 'Department', 'CreatedBy', 'CreatedOn', 'ModifiedBy', 'ModifiedOn', 'SupervisorQuota2', 'QuotaUsed1', 'QuotaUsed2', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userEmail', 'userFirstname', 'userLastname', 'password', 'salt', 'supervisorQuota1', 'roleId', 'status', 'projectYear', 'department', 'createdBy', 'createdOn', 'modifiedBy', 'modifiedOn', 'supervisorQuota2', 'quotaUsed1', 'quotaUsed2', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USER_EMAIL, UserPeer::USER_FIRSTNAME, UserPeer::USER_LASTNAME, UserPeer::PASSWORD, UserPeer::SALT, UserPeer::SUPERVISOR_QUOTA_1, UserPeer::ROLE_ID, UserPeer::STATUS, UserPeer::PROJECT_YEAR, UserPeer::DEPARTMENT, UserPeer::CREATED_BY, UserPeer::CREATED_ON, UserPeer::MODIFIED_BY, UserPeer::MODIFIED_ON, UserPeer::SUPERVISOR_QUOTA_2, UserPeer::QUOTA_USED_1, UserPeer::QUOTA_USED_2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_EMAIL', 'USER_FIRSTNAME', 'USER_LASTNAME', 'PASSWORD', 'SALT', 'SUPERVISOR_QUOTA_1', 'ROLE_ID', 'STATUS', 'PROJECT_YEAR', 'DEPARTMENT', 'CREATED_BY', 'CREATED_ON', 'MODIFIED_BY', 'MODIFIED_ON', 'SUPERVISOR_QUOTA_2', 'QUOTA_USED_1', 'QUOTA_USED_2', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_email', 'user_firstname', 'user_lastname', 'password', 'salt', 'supervisor_quota_1', 'role_id', 'status', 'project_year', 'department', 'created_by', 'created_on', 'modified_by', 'modified_on', 'supervisor_quota_2', 'quota_used_1', 'quota_used_2', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -125,12 +128,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserEmail' => 1, 'UserFirstname' => 2, 'UserLastname' => 3, 'Password' => 4, 'SupervisorQuota1' => 5, 'RoleId' => 6, 'Status' => 7, 'ProjectYear' => 8, 'Department' => 9, 'CreatedBy' => 10, 'CreatedOn' => 11, 'ModifiedBy' => 12, 'ModifiedOn' => 13, 'SupervisorQuota2' => 14, 'QuotaUsed1' => 15, 'QuotaUsed2' => 16, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userEmail' => 1, 'userFirstname' => 2, 'userLastname' => 3, 'password' => 4, 'supervisorQuota1' => 5, 'roleId' => 6, 'status' => 7, 'projectYear' => 8, 'department' => 9, 'createdBy' => 10, 'createdOn' => 11, 'modifiedBy' => 12, 'modifiedOn' => 13, 'supervisorQuota2' => 14, 'quotaUsed1' => 15, 'quotaUsed2' => 16, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USER_EMAIL => 1, UserPeer::USER_FIRSTNAME => 2, UserPeer::USER_LASTNAME => 3, UserPeer::PASSWORD => 4, UserPeer::SUPERVISOR_QUOTA_1 => 5, UserPeer::ROLE_ID => 6, UserPeer::STATUS => 7, UserPeer::PROJECT_YEAR => 8, UserPeer::DEPARTMENT => 9, UserPeer::CREATED_BY => 10, UserPeer::CREATED_ON => 11, UserPeer::MODIFIED_BY => 12, UserPeer::MODIFIED_ON => 13, UserPeer::SUPERVISOR_QUOTA_2 => 14, UserPeer::QUOTA_USED_1 => 15, UserPeer::QUOTA_USED_2 => 16, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_EMAIL' => 1, 'USER_FIRSTNAME' => 2, 'USER_LASTNAME' => 3, 'PASSWORD' => 4, 'SUPERVISOR_QUOTA_1' => 5, 'ROLE_ID' => 6, 'STATUS' => 7, 'PROJECT_YEAR' => 8, 'DEPARTMENT' => 9, 'CREATED_BY' => 10, 'CREATED_ON' => 11, 'MODIFIED_BY' => 12, 'MODIFIED_ON' => 13, 'SUPERVISOR_QUOTA_2' => 14, 'QUOTA_USED_1' => 15, 'QUOTA_USED_2' => 16, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_email' => 1, 'user_firstname' => 2, 'user_lastname' => 3, 'password' => 4, 'supervisor_quota_1' => 5, 'role_id' => 6, 'status' => 7, 'project_year' => 8, 'department' => 9, 'created_by' => 10, 'created_on' => 11, 'modified_by' => 12, 'modified_on' => 13, 'supervisor_quota_2' => 14, 'quota_used_1' => 15, 'quota_used_2' => 16, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserEmail' => 1, 'UserFirstname' => 2, 'UserLastname' => 3, 'Password' => 4, 'Salt' => 5, 'SupervisorQuota1' => 6, 'RoleId' => 7, 'Status' => 8, 'ProjectYear' => 9, 'Department' => 10, 'CreatedBy' => 11, 'CreatedOn' => 12, 'ModifiedBy' => 13, 'ModifiedOn' => 14, 'SupervisorQuota2' => 15, 'QuotaUsed1' => 16, 'QuotaUsed2' => 17, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userEmail' => 1, 'userFirstname' => 2, 'userLastname' => 3, 'password' => 4, 'salt' => 5, 'supervisorQuota1' => 6, 'roleId' => 7, 'status' => 8, 'projectYear' => 9, 'department' => 10, 'createdBy' => 11, 'createdOn' => 12, 'modifiedBy' => 13, 'modifiedOn' => 14, 'supervisorQuota2' => 15, 'quotaUsed1' => 16, 'quotaUsed2' => 17, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USER_EMAIL => 1, UserPeer::USER_FIRSTNAME => 2, UserPeer::USER_LASTNAME => 3, UserPeer::PASSWORD => 4, UserPeer::SALT => 5, UserPeer::SUPERVISOR_QUOTA_1 => 6, UserPeer::ROLE_ID => 7, UserPeer::STATUS => 8, UserPeer::PROJECT_YEAR => 9, UserPeer::DEPARTMENT => 10, UserPeer::CREATED_BY => 11, UserPeer::CREATED_ON => 12, UserPeer::MODIFIED_BY => 13, UserPeer::MODIFIED_ON => 14, UserPeer::SUPERVISOR_QUOTA_2 => 15, UserPeer::QUOTA_USED_1 => 16, UserPeer::QUOTA_USED_2 => 17, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_EMAIL' => 1, 'USER_FIRSTNAME' => 2, 'USER_LASTNAME' => 3, 'PASSWORD' => 4, 'SALT' => 5, 'SUPERVISOR_QUOTA_1' => 6, 'ROLE_ID' => 7, 'STATUS' => 8, 'PROJECT_YEAR' => 9, 'DEPARTMENT' => 10, 'CREATED_BY' => 11, 'CREATED_ON' => 12, 'MODIFIED_BY' => 13, 'MODIFIED_ON' => 14, 'SUPERVISOR_QUOTA_2' => 15, 'QUOTA_USED_1' => 16, 'QUOTA_USED_2' => 17, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_email' => 1, 'user_firstname' => 2, 'user_lastname' => 3, 'password' => 4, 'salt' => 5, 'supervisor_quota_1' => 6, 'role_id' => 7, 'status' => 8, 'project_year' => 9, 'department' => 10, 'created_by' => 11, 'created_on' => 12, 'modified_by' => 13, 'modified_on' => 14, 'supervisor_quota_2' => 15, 'quota_used_1' => 16, 'quota_used_2' => 17, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -209,6 +212,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::USER_FIRSTNAME);
             $criteria->addSelectColumn(UserPeer::USER_LASTNAME);
             $criteria->addSelectColumn(UserPeer::PASSWORD);
+            $criteria->addSelectColumn(UserPeer::SALT);
             $criteria->addSelectColumn(UserPeer::SUPERVISOR_QUOTA_1);
             $criteria->addSelectColumn(UserPeer::ROLE_ID);
             $criteria->addSelectColumn(UserPeer::STATUS);
@@ -227,6 +231,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.USER_FIRSTNAME');
             $criteria->addSelectColumn($alias . '.USER_LASTNAME');
             $criteria->addSelectColumn($alias . '.PASSWORD');
+            $criteria->addSelectColumn($alias . '.SALT');
             $criteria->addSelectColumn($alias . '.SUPERVISOR_QUOTA_1');
             $criteria->addSelectColumn($alias . '.ROLE_ID');
             $criteria->addSelectColumn($alias . '.STATUS');
@@ -365,7 +370,7 @@ abstract class BaseUserPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getId();
+                $key = serialize(array((string) $obj->getId(), (string) $obj->getUserEmail()));
             } // if key === null
             UserPeer::$instances[$key] = $obj;
         }
@@ -388,10 +393,10 @@ abstract class BaseUserPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof User) {
-                $key = (string) $value->getId();
-            } elseif (is_scalar($value)) {
+                $key = serialize(array((string) $value->getId(), (string) $value->getUserEmail()));
+            } elseif (is_array($value) && count($value) === 2) {
                 // assume we've been passed a primary key
-                $key = (string) $value;
+                $key = serialize(array((string) $value[0], (string) $value[1]));
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or User object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -459,11 +464,11 @@ abstract class BaseUserPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null) {
+        if ($row[$startcol] === null && $row[$startcol + 1] === null) {
             return null;
         }
 
-        return (string) $row[$startcol];
+        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
     }
 
     /**
@@ -478,7 +483,7 @@ abstract class BaseUserPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return array((int) $row[$startcol], (string) $row[$startcol + 1]);
     }
 
     /**
@@ -883,6 +888,14 @@ abstract class BaseUserPeer
                 $selectCriteria->setPrimaryTableName(UserPeer::TABLE_NAME);
             }
 
+            $comparison = $criteria->getComparison(UserPeer::USER_EMAIL);
+            $value = $criteria->remove(UserPeer::USER_EMAIL);
+            if ($value) {
+                $selectCriteria->add(UserPeer::USER_EMAIL, $value, $comparison);
+            } else {
+                $selectCriteria->setPrimaryTableName(UserPeer::TABLE_NAME);
+            }
+
         } else { // $values is User object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -911,7 +924,6 @@ abstract class BaseUserPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += UserPeer::doOnDeleteCascade(new Criteria(UserPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con, UserPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -945,14 +957,32 @@ abstract class BaseUserPeer
         }
 
         if ($values instanceof Criteria) {
+            // invalidate the cache for all objects of this type, since we have no
+            // way of knowing (without running a query) what objects should be invalidated
+            // from the cache based on this Criteria.
+            UserPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof User) { // it's a model object
+            // invalidate the cache for this single object
+            UserPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(UserPeer::DATABASE_NAME);
-            $criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
+            // primary key is composite; we therefore, expect
+            // the primary key passed to be an array of pkey values
+            if (count($values) == count($values, COUNT_RECURSIVE)) {
+                // array is not multi-dimensional
+                $values = array($values);
+            }
+            foreach ($values as $value) {
+                $criterion = $criteria->getNewCriterion(UserPeer::ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(UserPeer::USER_EMAIL, $value[1]));
+                $criteria->addOr($criterion);
+                // we can invalidate the cache for this single PK
+                UserPeer::removeInstanceFromPool($value);
+            }
         }
 
         // Set the correct dbName
@@ -965,23 +995,6 @@ abstract class BaseUserPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            $affectedRows += UserPeer::doOnDeleteCascade($c, $con);
-
-            // Because this db requires some delete cascade/set null emulation, we have to
-            // clear the cached instance *after* the emulation has happened (since
-            // instances get re-added by the select statement contained therein).
-            if ($values instanceof Criteria) {
-                UserPeer::clearInstancePool();
-            } elseif ($values instanceof User) { // it's a model object
-                UserPeer::removeInstanceFromPool($values);
-            } else { // it's a primary key, or an array of pks
-                foreach ((array) $values as $singleval) {
-                    UserPeer::removeInstanceFromPool($singleval);
-                }
-            }
-
             $affectedRows += BasePeer::doDelete($criteria, $con);
             UserPeer::clearRelatedInstancePool();
             $con->commit();
@@ -991,45 +1004,6 @@ abstract class BaseUserPeer
             $con->rollBack();
             throw $e;
         }
-    }
-
-    /**
-     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return int The number of affected rows (if supported by underlying database driver).
-     */
-    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-    {
-        // initialize var to track total num of affected rows
-        $affectedRows = 0;
-
-        // first find the objects that are implicated by the $criteria
-        $objects = UserPeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-
-            // delete related Profileuser objects
-            $criteria = new Criteria(ProfileuserPeer::DATABASE_NAME);
-
-            $criteria->add(ProfileuserPeer::USER_ID, $obj->getId());
-            $affectedRows += ProfileuserPeer::doDelete($criteria, $con);
-
-            // delete related Project objects
-            $criteria = new Criteria(ProjectPeer::DATABASE_NAME);
-
-            $criteria->add(ProjectPeer::USER_ID, $obj->getId());
-            $affectedRows += ProjectPeer::doDelete($criteria, $con);
-        }
-
-        return $affectedRows;
     }
 
     /**
@@ -1070,58 +1044,28 @@ abstract class BaseUserPeer
     }
 
     /**
-     * Retrieve a single object by pkey.
-     *
-     * @param      int $pk the primary key.
-     * @param      PropelPDO $con the connection to use
-     * @return User
+     * Retrieve object using using composite pkey values.
+     * @param   int $id
+     * @param   string $user_email
+     * @param      PropelPDO $con
+     * @return   User
      */
-    public static function retrieveByPK($pk, PropelPDO $con = null)
-    {
-
-        if (null !== ($obj = UserPeer::getInstanceFromPool((string) $pk))) {
-            return $obj;
+    public static function retrieveByPK($id, $user_email, PropelPDO $con = null) {
+        $_instancePoolKey = serialize(array((string) $id, (string) $user_email));
+         if (null !== ($obj = UserPeer::getInstanceFromPool($_instancePoolKey))) {
+             return $obj;
         }
 
         if ($con === null) {
             $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
         $criteria = new Criteria(UserPeer::DATABASE_NAME);
-        $criteria->add(UserPeer::ID, $pk);
-
+        $criteria->add(UserPeer::ID, $id);
+        $criteria->add(UserPeer::USER_EMAIL, $user_email);
         $v = UserPeer::doSelect($criteria, $con);
 
-        return !empty($v) > 0 ? $v[0] : null;
+        return !empty($v) ? $v[0] : null;
     }
-
-    /**
-     * Retrieve multiple objects by pkey.
-     *
-     * @param      array $pks List of primary keys
-     * @param      PropelPDO $con the connection to use
-     * @return User[]
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function retrieveByPKs($pks, PropelPDO $con = null)
-    {
-        if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $objs = null;
-        if (empty($pks)) {
-            $objs = array();
-        } else {
-            $criteria = new Criteria(UserPeer::DATABASE_NAME);
-            $criteria->add(UserPeer::ID, $pks, Criteria::IN);
-            $objs = UserPeer::doSelect($criteria, $con);
-        }
-
-        return $objs;
-    }
-
 } // BaseUserPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.

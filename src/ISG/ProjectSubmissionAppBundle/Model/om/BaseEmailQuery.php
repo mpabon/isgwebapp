@@ -571,7 +571,7 @@ abstract class BaseEmailQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(EmailPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(EmailPeer::USER_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
         }

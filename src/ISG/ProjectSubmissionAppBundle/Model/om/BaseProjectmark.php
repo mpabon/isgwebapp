@@ -1474,7 +1474,9 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
     public function getUserRelatedByUserId(PropelPDO $con = null)
     {
         if ($this->aUserRelatedByUserId === null && ($this->user_id !== null)) {
-            $this->aUserRelatedByUserId = UserQuery::create()->findPk($this->user_id, $con);
+            $this->aUserRelatedByUserId = UserQuery::create()
+                ->filterByProjectmarkRelatedByUserId($this) // here
+                ->findOne($con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -1578,7 +1580,9 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
     public function getUserRelatedByEvaluatorId(PropelPDO $con = null)
     {
         if ($this->aUserRelatedByEvaluatorId === null && ($this->evaluator_id !== null)) {
-            $this->aUserRelatedByEvaluatorId = UserQuery::create()->findPk($this->evaluator_id, $con);
+            $this->aUserRelatedByEvaluatorId = UserQuery::create()
+                ->filterByProjectmarkRelatedByEvaluatorId($this) // here
+                ->findOne($con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

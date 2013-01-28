@@ -1331,7 +1331,9 @@ abstract class BaseEmail extends BaseObject implements Persistent
     public function getUser(PropelPDO $con = null)
     {
         if ($this->aUser === null && ($this->user_id !== null)) {
-            $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
+            $this->aUser = UserQuery::create()
+                ->filterByEmail($this) // here
+                ->findOne($con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

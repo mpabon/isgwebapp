@@ -707,7 +707,7 @@ abstract class BaseProjectmarkQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ProjectmarkPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(ProjectmarkPeer::USER_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUserRelatedByUserId() only accepts arguments of type User or PropelCollection');
         }
@@ -859,7 +859,7 @@ abstract class BaseProjectmarkQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ProjectmarkPeer::EVALUATOR_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(ProjectmarkPeer::EVALUATOR_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUserRelatedByEvaluatorId() only accepts arguments of type User or PropelCollection');
         }

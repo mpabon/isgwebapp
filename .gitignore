@@ -11,3 +11,13 @@ web/bundles/*
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
+
+app/logs/dev.log
+app/logs/prod.log
+
+app/propel/migrations
+
+#eclipse directories
+.buildpath
+.project
+.settings

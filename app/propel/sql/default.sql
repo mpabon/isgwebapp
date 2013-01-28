@@ -15,7 +15,8 @@ CREATE TABLE `User`
     `user_email` VARCHAR(100) NOT NULL,
     `user_firstname` VARCHAR(100) NOT NULL,
     `user_lastname` VARCHAR(100) NOT NULL,
-    `password` VARCHAR(100) NOT NULL,
+    `password` VARCHAR(128) NOT NULL,
+    `salt` INTEGER NOT NULL,
     `supervisor_quota_1` INTEGER DEFAULT 0,
     `role_id` INTEGER,
     `status` VARCHAR(50) NOT NULL,
@@ -28,14 +29,14 @@ CREATE TABLE `User`
     `supervisor_quota_2` INTEGER DEFAULT 0,
     `quota_used_1` INTEGER DEFAULT 0,
     `quota_used_2` INTEGER DEFAULT 0,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`id`,`user_email`),
     INDEX `User_FI_1` (`role_id`),
     CONSTRAINT `User_FK_1`
         FOREIGN KEY (`role_id`)
         REFERENCES `Role` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Role
@@ -55,7 +56,7 @@ CREATE TABLE `Role`
     `modified_by` INTEGER,
     `modified_on` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Profile
@@ -73,7 +74,7 @@ CREATE TABLE `Profile`
     `modified_by` INTEGER,
     `modified_on` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- ProfileUser
@@ -103,7 +104,7 @@ CREATE TABLE `ProfileUser`
         FOREIGN KEY (`profile_id`)
         REFERENCES `Profile` (`id`)
         ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Project
@@ -134,7 +135,7 @@ CREATE TABLE `Project`
         FOREIGN KEY (`user_id`)
         REFERENCES `User` (`id`)
         ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Email
@@ -162,7 +163,7 @@ CREATE TABLE `Email`
     CONSTRAINT `Email_FK_2`
         FOREIGN KEY (`project_id`)
         REFERENCES `Project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- ProjectMark
@@ -196,7 +197,7 @@ CREATE TABLE `ProjectMark`
     CONSTRAINT `ProjectMark_FK_3`
         FOREIGN KEY (`evaluator_id`)
         REFERENCES `User` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- ProjectDocument
@@ -227,7 +228,7 @@ CREATE TABLE `ProjectDocument`
     CONSTRAINT `ProjectDocument_FK_2`
         FOREIGN KEY (`project_id`)
         REFERENCES `Project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
 -- Register
@@ -241,7 +242,7 @@ CREATE TABLE `Register`
     `name` VARCHAR(100) NOT NULL,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; 
+) ENGINE=InnoDB CHARACTER SET='utf8';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

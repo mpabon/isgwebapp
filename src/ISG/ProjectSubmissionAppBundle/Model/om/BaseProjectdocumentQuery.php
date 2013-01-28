@@ -696,7 +696,7 @@ abstract class BaseProjectdocumentQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ProjectdocumentPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(ProjectdocumentPeer::USER_ID, $user->toKeyValue('Id', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
         }

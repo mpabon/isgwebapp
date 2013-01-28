@@ -43,14 +43,15 @@ class UserTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('USER_EMAIL', 'UserEmail', 'VARCHAR', true, 100, null);
+        $this->addPrimaryKey('USER_EMAIL', 'UserEmail', 'VARCHAR', true, 100, null);
         $this->getColumn('USER_EMAIL', false)->setPrimaryString(true);
         $this->addColumn('USER_FIRSTNAME', 'UserFirstname', 'VARCHAR', true, 100, null);
         $this->getColumn('USER_FIRSTNAME', false)->setPrimaryString(true);
         $this->addColumn('USER_LASTNAME', 'UserLastname', 'VARCHAR', true, 100, null);
         $this->getColumn('USER_LASTNAME', false)->setPrimaryString(true);
-        $this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 100, null);
+        $this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 128, null);
         $this->getColumn('PASSWORD', false)->setPrimaryString(true);
+        $this->addColumn('SALT', 'Salt', 'INTEGER', true, null, null);
         $this->addColumn('SUPERVISOR_QUOTA_1', 'SupervisorQuota1', 'INTEGER', false, null, 0);
         $this->addForeignKey('ROLE_ID', 'RoleId', 'INTEGER', 'Role', 'ID', false, null, null);
         $this->addColumn('STATUS', 'Status', 'VARCHAR', true, 50, null);

@@ -83,6 +83,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $password;
 
     /**
+     * The value for the salt field.
+     * @var        int
+     */
+    protected $salt;
+
+    /**
      * The value for the supervisor_quota_1 field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -321,6 +327,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Get the [salt] column value.
+     *
+     * @return int
+     */
+    public function getSalt()
+    {
+        return $this->salt;
     }
 
     /**
@@ -601,6 +617,27 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         return $this;
     } // setPassword()
+
+    /**
+     * Set the value of [salt] column.
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setSalt($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->salt !== $v) {
+            $this->salt = $v;
+            $this->modifiedColumns[] = UserPeer::SALT;
+        }
+
+
+        return $this;
+    } // setSalt()
 
     /**
      * Set the value of [supervisor_quota_1] column.
@@ -915,18 +952,19 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->user_firstname = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->user_lastname = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->password = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->supervisor_quota_1 = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->role_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->status = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->project_year = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->department = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->created_by = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->created_on = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->modified_by = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->modified_on = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->supervisor_quota_2 = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->quota_used_1 = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-            $this->quota_used_2 = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->salt = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->supervisor_quota_1 = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->role_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->status = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->project_year = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->department = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->created_by = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->created_on = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->modified_by = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->modified_on = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->supervisor_quota_2 = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->quota_used_1 = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->quota_used_2 = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -935,7 +973,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 17; // 17 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -1292,6 +1330,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = '`PASSWORD`';
         }
+        if ($this->isColumnModified(UserPeer::SALT)) {
+            $modifiedColumns[':p' . $index++]  = '`SALT`';
+        }
         if ($this->isColumnModified(UserPeer::SUPERVISOR_QUOTA_1)) {
             $modifiedColumns[':p' . $index++]  = '`SUPERVISOR_QUOTA_1`';
         }
@@ -1353,6 +1394,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`PASSWORD`':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
+                        break;
+                    case '`SALT`':
+                        $stmt->bindValue($identifier, $this->salt, PDO::PARAM_INT);
                         break;
                     case '`SUPERVISOR_QUOTA_1`':
                         $stmt->bindValue($identifier, $this->supervisor_quota_1, PDO::PARAM_INT);
@@ -1600,39 +1644,42 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getPassword();
                 break;
             case 5:
-                return $this->getSupervisorQuota1();
+                return $this->getSalt();
                 break;
             case 6:
-                return $this->getRoleId();
+                return $this->getSupervisorQuota1();
                 break;
             case 7:
-                return $this->getStatus();
+                return $this->getRoleId();
                 break;
             case 8:
-                return $this->getProjectYear();
+                return $this->getStatus();
                 break;
             case 9:
-                return $this->getDepartment();
+                return $this->getProjectYear();
                 break;
             case 10:
-                return $this->getCreatedBy();
+                return $this->getDepartment();
                 break;
             case 11:
-                return $this->getCreatedOn();
+                return $this->getCreatedBy();
                 break;
             case 12:
-                return $this->getModifiedBy();
+                return $this->getCreatedOn();
                 break;
             case 13:
-                return $this->getModifiedOn();
+                return $this->getModifiedBy();
                 break;
             case 14:
-                return $this->getSupervisorQuota2();
+                return $this->getModifiedOn();
                 break;
             case 15:
-                return $this->getQuotaUsed1();
+                return $this->getSupervisorQuota2();
                 break;
             case 16:
+                return $this->getQuotaUsed1();
+                break;
+            case 17:
                 return $this->getQuotaUsed2();
                 break;
             default:
@@ -1658,10 +1705,10 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['User'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['User'][serialize($this->getPrimaryKey())])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['User'][$this->getPrimaryKey()] = true;
+        $alreadyDumpedObjects['User'][serialize($this->getPrimaryKey())] = true;
         $keys = UserPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
@@ -1669,18 +1716,19 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[2] => $this->getUserFirstname(),
             $keys[3] => $this->getUserLastname(),
             $keys[4] => $this->getPassword(),
-            $keys[5] => $this->getSupervisorQuota1(),
-            $keys[6] => $this->getRoleId(),
-            $keys[7] => $this->getStatus(),
-            $keys[8] => $this->getProjectYear(),
-            $keys[9] => $this->getDepartment(),
-            $keys[10] => $this->getCreatedBy(),
-            $keys[11] => $this->getCreatedOn(),
-            $keys[12] => $this->getModifiedBy(),
-            $keys[13] => $this->getModifiedOn(),
-            $keys[14] => $this->getSupervisorQuota2(),
-            $keys[15] => $this->getQuotaUsed1(),
-            $keys[16] => $this->getQuotaUsed2(),
+            $keys[5] => $this->getSalt(),
+            $keys[6] => $this->getSupervisorQuota1(),
+            $keys[7] => $this->getRoleId(),
+            $keys[8] => $this->getStatus(),
+            $keys[9] => $this->getProjectYear(),
+            $keys[10] => $this->getDepartment(),
+            $keys[11] => $this->getCreatedBy(),
+            $keys[12] => $this->getCreatedOn(),
+            $keys[13] => $this->getModifiedBy(),
+            $keys[14] => $this->getModifiedOn(),
+            $keys[15] => $this->getSupervisorQuota2(),
+            $keys[16] => $this->getQuotaUsed1(),
+            $keys[17] => $this->getQuotaUsed2(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aRole) {
@@ -1754,39 +1802,42 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setPassword($value);
                 break;
             case 5:
-                $this->setSupervisorQuota1($value);
+                $this->setSalt($value);
                 break;
             case 6:
-                $this->setRoleId($value);
+                $this->setSupervisorQuota1($value);
                 break;
             case 7:
-                $this->setStatus($value);
+                $this->setRoleId($value);
                 break;
             case 8:
-                $this->setProjectYear($value);
+                $this->setStatus($value);
                 break;
             case 9:
-                $this->setDepartment($value);
+                $this->setProjectYear($value);
                 break;
             case 10:
-                $this->setCreatedBy($value);
+                $this->setDepartment($value);
                 break;
             case 11:
-                $this->setCreatedOn($value);
+                $this->setCreatedBy($value);
                 break;
             case 12:
-                $this->setModifiedBy($value);
+                $this->setCreatedOn($value);
                 break;
             case 13:
-                $this->setModifiedOn($value);
+                $this->setModifiedBy($value);
                 break;
             case 14:
-                $this->setSupervisorQuota2($value);
+                $this->setModifiedOn($value);
                 break;
             case 15:
-                $this->setQuotaUsed1($value);
+                $this->setSupervisorQuota2($value);
                 break;
             case 16:
+                $this->setQuotaUsed1($value);
+                break;
+            case 17:
                 $this->setQuotaUsed2($value);
                 break;
         } // switch()
@@ -1818,18 +1869,19 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setUserFirstname($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setUserLastname($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPassword($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setSupervisorQuota1($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setRoleId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setStatus($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setProjectYear($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setDepartment($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedBy($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setCreatedOn($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setModifiedBy($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setModifiedOn($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setSupervisorQuota2($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setQuotaUsed1($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setQuotaUsed2($arr[$keys[16]]);
+        if (array_key_exists($keys[5], $arr)) $this->setSalt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSupervisorQuota1($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setRoleId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setStatus($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProjectYear($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setDepartment($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedBy($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCreatedOn($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setModifiedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setModifiedOn($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setSupervisorQuota2($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setQuotaUsed1($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setQuotaUsed2($arr[$keys[17]]);
     }
 
     /**
@@ -1846,6 +1898,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::USER_FIRSTNAME)) $criteria->add(UserPeer::USER_FIRSTNAME, $this->user_firstname);
         if ($this->isColumnModified(UserPeer::USER_LASTNAME)) $criteria->add(UserPeer::USER_LASTNAME, $this->user_lastname);
         if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
+        if ($this->isColumnModified(UserPeer::SALT)) $criteria->add(UserPeer::SALT, $this->salt);
         if ($this->isColumnModified(UserPeer::SUPERVISOR_QUOTA_1)) $criteria->add(UserPeer::SUPERVISOR_QUOTA_1, $this->supervisor_quota_1);
         if ($this->isColumnModified(UserPeer::ROLE_ID)) $criteria->add(UserPeer::ROLE_ID, $this->role_id);
         if ($this->isColumnModified(UserPeer::STATUS)) $criteria->add(UserPeer::STATUS, $this->status);
@@ -1874,28 +1927,35 @@ abstract class BaseUser extends BaseObject implements Persistent
     {
         $criteria = new Criteria(UserPeer::DATABASE_NAME);
         $criteria->add(UserPeer::ID, $this->id);
+        $criteria->add(UserPeer::USER_EMAIL, $this->user_email);
 
         return $criteria;
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns the composite primary key for this object.
+     * The array elements will be in same order as specified in XML.
+     * @return array
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        $pks = array();
+        $pks[0] = $this->getId();
+        $pks[1] = $this->getUserEmail();
+
+        return $pks;
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Set the [composite] primary key.
      *
-     * @param  int $key Primary key.
+     * @param array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($keys)
     {
-        $this->setId($key);
+        $this->setId($keys[0]);
+        $this->setUserEmail($keys[1]);
     }
 
     /**
@@ -1905,7 +1965,7 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getId();
+        return (null === $this->getId()) && (null === $this->getUserEmail());
     }
 
     /**
@@ -1925,6 +1985,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setUserFirstname($this->getUserFirstname());
         $copyObj->setUserLastname($this->getUserLastname());
         $copyObj->setPassword($this->getPassword());
+        $copyObj->setSalt($this->getSalt());
         $copyObj->setSupervisorQuota1($this->getSupervisorQuota1());
         $copyObj->setRoleId($this->getRoleId());
         $copyObj->setStatus($this->getStatus());
@@ -3490,6 +3551,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->user_firstname = null;
         $this->user_lastname = null;
         $this->password = null;
+        $this->salt = null;
         $this->supervisor_quota_1 = null;
         $this->role_id = null;
         $this->status = null;
