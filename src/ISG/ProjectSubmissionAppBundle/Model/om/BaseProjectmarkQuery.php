@@ -133,7 +133,7 @@ abstract class BaseProjectmarkQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34, 56, 78), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$id, $user_id, $evaluator_id, $project_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -175,10 +175,10 @@ abstract class BaseProjectmarkQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `USER_ID`, `EVALUATOR_ID`, `PROJECT_ID`, `TOTAL_MARKS`, `MARK_1`, `MARK_2`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `ProjectMark` WHERE `ID` = :p0 AND `USER_ID` = :p1 AND `EVALUATOR_ID` = :p2 AND `PROJECT_ID` = :p3';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
-            $stmt->bindValue(':p2', $key[2], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);			
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);			
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);			
+            $stmt->bindValue(':p2', $key[2], PDO::PARAM_INT);			
             $stmt->bindValue(':p3', $key[3], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {

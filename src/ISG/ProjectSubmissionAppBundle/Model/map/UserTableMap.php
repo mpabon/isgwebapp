@@ -45,6 +45,8 @@ class UserTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addPrimaryKey('USER_EMAIL', 'UserEmail', 'VARCHAR', true, 100, null);
         $this->getColumn('USER_EMAIL', false)->setPrimaryString(true);
+        $this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 100, null);
+        $this->getColumn('USERNAME', false)->setPrimaryString(true);
         $this->addColumn('USER_FIRSTNAME', 'UserFirstname', 'VARCHAR', true, 100, null);
         $this->getColumn('USER_FIRSTNAME', false)->setPrimaryString(true);
         $this->addColumn('USER_LASTNAME', 'UserLastname', 'VARCHAR', true, 100, null);

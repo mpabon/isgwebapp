@@ -13,6 +13,7 @@ CREATE TABLE `User`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_email` VARCHAR(100) NOT NULL,
+    `username` VARCHAR(100) NOT NULL,
     `user_firstname` VARCHAR(100) NOT NULL,
     `user_lastname` VARCHAR(100) NOT NULL,
     `password` VARCHAR(128) NOT NULL,

@@ -139,7 +139,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return int
      */
     public function getId()
@@ -149,7 +149,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [user_id] column value.
-     *
+     * 
      * @return int
      */
     public function getUserId()
@@ -159,7 +159,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [evaluator_id] column value.
-     *
+     * 
      * @return int
      */
     public function getEvaluatorId()
@@ -169,7 +169,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [project_id] column value.
-     *
+     * 
      * @return int
      */
     public function getProjectId()
@@ -179,7 +179,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [total_marks] column value.
-     *
+     * 
      * @return int
      */
     public function getTotalMarks()
@@ -189,7 +189,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [mark_1] column value.
-     *
+     * 
      * @return int
      */
     public function getMark1()
@@ -199,7 +199,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [mark_2] column value.
-     *
+     * 
      * @return int
      */
     public function getMark2()
@@ -209,7 +209,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [created_by] column value.
-     *
+     * 
      * @return int
      */
     public function getCreatedBy()
@@ -219,7 +219,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [created_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -256,7 +256,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [modified_by] column value.
-     *
+     * 
      * @return int
      */
     public function getModifiedBy()
@@ -266,7 +266,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [modified_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -303,7 +303,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -324,7 +324,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [user_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -349,7 +349,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [evaluator_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -374,7 +374,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [project_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -399,7 +399,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [total_marks] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -420,7 +420,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [mark_1] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -441,7 +441,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [mark_2] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -462,7 +462,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [created_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -483,7 +483,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Sets the value of [created_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Projectmark The current object (for fluent API support)
@@ -506,7 +506,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Set the value of [modified_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectmark The current object (for fluent API support)
      */
@@ -527,7 +527,7 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
 
     /**
      * Sets the value of [modified_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Projectmark The current object (for fluent API support)
@@ -893,37 +893,37 @@ abstract class BaseProjectmark extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`ID`':						
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':
+                    case '`USER_ID`':						
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`EVALUATOR_ID`':
+                    case '`EVALUATOR_ID`':						
                         $stmt->bindValue($identifier, $this->evaluator_id, PDO::PARAM_INT);
                         break;
-                    case '`PROJECT_ID`':
+                    case '`PROJECT_ID`':						
                         $stmt->bindValue($identifier, $this->project_id, PDO::PARAM_INT);
                         break;
-                    case '`TOTAL_MARKS`':
+                    case '`TOTAL_MARKS`':						
                         $stmt->bindValue($identifier, $this->total_marks, PDO::PARAM_INT);
                         break;
-                    case '`MARK_1`':
+                    case '`MARK_1`':						
                         $stmt->bindValue($identifier, $this->mark_1, PDO::PARAM_INT);
                         break;
-                    case '`MARK_2`':
+                    case '`MARK_2`':						
                         $stmt->bindValue($identifier, $this->mark_2, PDO::PARAM_INT);
                         break;
-                    case '`CREATED_BY`':
+                    case '`CREATED_BY`':						
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case '`CREATED_ON`':
+                    case '`CREATED_ON`':						
                         $stmt->bindValue($identifier, $this->created_on, PDO::PARAM_STR);
                         break;
-                    case '`MODIFIED_BY`':
+                    case '`MODIFIED_BY`':						
                         $stmt->bindValue($identifier, $this->modified_by, PDO::PARAM_INT);
                         break;
-                    case '`MODIFIED_ON`':
+                    case '`MODIFIED_ON`':						
                         $stmt->bindValue($identifier, $this->modified_on, PDO::PARAM_STR);
                         break;
                 }

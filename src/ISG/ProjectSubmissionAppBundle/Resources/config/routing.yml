@@ -1,14 +1,14 @@
 _mainIndex:
     pattern: /
-    defaults: {_controller: ISGProjectSubmissionAppBundle:Test:new }
-
-_user_enter:
-    pattern: /user/enter.php
-    defaults : {_controller: ISGProjectSubmissionAppBundle:User:enter }    
+    defaults: {_controller: ISGProjectSubmissionAppBundle:User:login }
+    
+  
+_register:
+    pattern: /register
+    defaults : {_controller: ISGProjectSubmissionAppBundle:User:register }    
 
 _user_show:
     pattern:  /user/show/{name}
     defaults: { _controller: ISGProjectSubmissionAppBundle:User:show }
 
-    
     

@@ -25,6 +25,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
 /**
  * @method UserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method UserQuery orderByUserEmail($order = Criteria::ASC) Order by the user_email column
+ * @method UserQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method UserQuery orderByUserFirstname($order = Criteria::ASC) Order by the user_firstname column
  * @method UserQuery orderByUserLastname($order = Criteria::ASC) Order by the user_lastname column
  * @method UserQuery orderByPassword($order = Criteria::ASC) Order by the password column
@@ -44,6 +45,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  *
  * @method UserQuery groupById() Group by the id column
  * @method UserQuery groupByUserEmail() Group by the user_email column
+ * @method UserQuery groupByUsername() Group by the username column
  * @method UserQuery groupByUserFirstname() Group by the user_firstname column
  * @method UserQuery groupByUserLastname() Group by the user_lastname column
  * @method UserQuery groupByPassword() Group by the password column
@@ -98,6 +100,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  *
  * @method User findOneById(int $id) Return the first User filtered by the id column
  * @method User findOneByUserEmail(string $user_email) Return the first User filtered by the user_email column
+ * @method User findOneByUsername(string $username) Return the first User filtered by the username column
  * @method User findOneByUserFirstname(string $user_firstname) Return the first User filtered by the user_firstname column
  * @method User findOneByUserLastname(string $user_lastname) Return the first User filtered by the user_lastname column
  * @method User findOneByPassword(string $password) Return the first User filtered by the password column
@@ -117,6 +120,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  *
  * @method array findById(int $id) Return User objects filtered by the id column
  * @method array findByUserEmail(string $user_email) Return User objects filtered by the user_email column
+ * @method array findByUsername(string $username) Return User objects filtered by the username column
  * @method array findByUserFirstname(string $user_firstname) Return User objects filtered by the user_firstname column
  * @method array findByUserLastname(string $user_lastname) Return User objects filtered by the user_lastname column
  * @method array findByPassword(string $password) Return User objects filtered by the password column
@@ -181,7 +185,7 @@ abstract class BaseUserQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$id, $user_email]
      * @param     PropelPDO $con an optional connection object
      *
@@ -221,10 +225,10 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_EMAIL`, `USER_FIRSTNAME`, `USER_LASTNAME`, `PASSWORD`, `SALT`, `SUPERVISOR_QUOTA_1`, `ROLE_ID`, `STATUS`, `PROJECT_YEAR`, `DEPARTMENT`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON`, `SUPERVISOR_QUOTA_2`, `QUOTA_USED_1`, `QUOTA_USED_2` FROM `User` WHERE `ID` = :p0 AND `USER_EMAIL` = :p1';
+        $sql = 'SELECT `ID`, `USER_EMAIL`, `USERNAME`, `USER_FIRSTNAME`, `USER_LASTNAME`, `PASSWORD`, `SALT`, `SUPERVISOR_QUOTA_1`, `ROLE_ID`, `STATUS`, `PROJECT_YEAR`, `DEPARTMENT`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON`, `SUPERVISOR_QUOTA_2`, `QUOTA_USED_1`, `QUOTA_USED_2` FROM `User` WHERE `ID` = :p0 AND `USER_EMAIL` = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);			
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);			
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -376,6 +380,35 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::USER_EMAIL, $userEmail, $comparison);
+    }
+
+    /**
+     * Filter the query on the username column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
+     * $query->filterByUsername('%fooValue%'); // WHERE username LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $username The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByUsername($username = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($username)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $username)) {
+                $username = str_replace('*', '%', $username);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::USERNAME, $username, $comparison);
     }
 
     /**

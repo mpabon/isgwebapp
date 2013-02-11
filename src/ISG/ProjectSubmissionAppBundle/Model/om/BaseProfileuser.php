@@ -122,7 +122,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return int
      */
     public function getId()
@@ -132,7 +132,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [profile_id] column value.
-     *
+     * 
      * @return int
      */
     public function getProfileId()
@@ -142,7 +142,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [user_id] column value.
-     *
+     * 
      * @return int
      */
     public function getUserId()
@@ -152,7 +152,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [start_date] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -189,7 +189,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [end_date] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -226,7 +226,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [created_by] column value.
-     *
+     * 
      * @return int
      */
     public function getCreatedBy()
@@ -236,7 +236,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [created_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -273,7 +273,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [modified_by] column value.
-     *
+     * 
      * @return int
      */
     public function getModifiedBy()
@@ -283,7 +283,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [modified_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -320,7 +320,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param int $v new value
      * @return Profileuser The current object (for fluent API support)
      */
@@ -341,7 +341,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Set the value of [profile_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Profileuser The current object (for fluent API support)
      */
@@ -366,7 +366,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Set the value of [user_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Profileuser The current object (for fluent API support)
      */
@@ -391,7 +391,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Sets the value of [start_date] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Profileuser The current object (for fluent API support)
@@ -414,7 +414,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Sets the value of [end_date] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Profileuser The current object (for fluent API support)
@@ -437,7 +437,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Set the value of [created_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Profileuser The current object (for fluent API support)
      */
@@ -458,7 +458,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Sets the value of [created_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Profileuser The current object (for fluent API support)
@@ -481,7 +481,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Set the value of [modified_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Profileuser The current object (for fluent API support)
      */
@@ -502,7 +502,7 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
 
     /**
      * Sets the value of [modified_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Profileuser The current object (for fluent API support)
@@ -849,31 +849,31 @@ abstract class BaseProfileuser extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`ID`':						
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`PROFILE_ID`':
+                    case '`PROFILE_ID`':						
                         $stmt->bindValue($identifier, $this->profile_id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':
+                    case '`USER_ID`':						
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`START_DATE`':
+                    case '`START_DATE`':						
                         $stmt->bindValue($identifier, $this->start_date, PDO::PARAM_STR);
                         break;
-                    case '`END_DATE`':
+                    case '`END_DATE`':						
                         $stmt->bindValue($identifier, $this->end_date, PDO::PARAM_STR);
                         break;
-                    case '`CREATED_BY`':
+                    case '`CREATED_BY`':						
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case '`CREATED_ON`':
+                    case '`CREATED_ON`':						
                         $stmt->bindValue($identifier, $this->created_on, PDO::PARAM_STR);
                         break;
-                    case '`MODIFIED_BY`':
+                    case '`MODIFIED_BY`':						
                         $stmt->bindValue($identifier, $this->modified_by, PDO::PARAM_INT);
                         break;
-                    case '`MODIFIED_ON`':
+                    case '`MODIFIED_ON`':						
                         $stmt->bindValue($identifier, $this->modified_on, PDO::PARAM_STR);
                         break;
                 }
