@@ -1,0 +1,166 @@
+@CHARSET "UTF-8";
+
+body {
+	background: #4167B1 url('/static/images/rhulbottom.png') no-repeat fixed bottom right;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;	
+}
+
+.logoup {
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.container-lg {
+	background-color: #FFFFFF;
+	width: 60%;
+	height: 100%;
+	margin: 30px auto 150px auto;
+	padding: 4px 6px 7px 8px;
+	border: 1px solid #7C7C7C;
+	
+}
+
+.header-lg {
+   color : #1C1C1C;
+   margin-left:10px;
+   width: 70%;
+   padding-bottom: 0px;
+   border-bottom: 1px solid #1C1C1C;
+}
+
+.header-lg h3 {
+	margin-bottom : 4px;
+}
+
+.content-lg {
+	margin: 15px auto 30px auto;
+    padding: 10px 30px 30px 30px;
+	width: 70%;
+	height: 80%
+}
+
+.form-lg {
+    margin: 0 auto 0 auto;
+}
+
+.form-text-lg {
+    width: 80%;
+	margin: 0px auto 4px 4px;
+}
+
+.label-lg {
+    margin: 0 4px 0 auto;
+	text-align: right;
+	width: 40%;
+}
+
+.form-text-lg input {
+	margin-left: 4px;
+	width: 40%;
+}
+
+.form-lg-submit {
+	width: 50%;
+	margin: 15px auto 0 auto;
+}
+
+.form-lg-submit input {
+    margin : 0 auto 0 auto;
+}
+
+#errors-lg {
+	width: 100%;
+	margin: 0 auto 10px auto;
+	background-color: #990C0A;
+	border: 1px solid #AB1E1C;
+	color: #ffffff;
+	padding: 5px 5px 2px 5px;
+}
+
+.addinfo-lg {
+	width: 100%;
+	margin-top: 10px;
+	padding: 8px 8px 8px 8px;
+	background-color: #EEEEEE;
+	border: 2px solid #6E6E6E;
+	color: #006DB1;
+	font-weight: 600;
+}
+
+.hreg{
+	width: 100%;
+	height: 20px;
+	text-align: right;
+	background-color : #FFFFFF;
+	padding-top:6px;
+    padding-bottom: 4px;
+}
+
+.hreg p {
+	display: inline;
+}
+
+.hreg a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.hreg .huser {
+    color: #006DB1;
+    font-weight: 600;
+}
+
+.container-reg {
+	background-color: #FFFFFF;
+	width: 80%;
+	height: 100%;
+	margin: 30px auto 150px auto;
+	padding: 4px 6px 7px 8px;
+	border: 1px solid #7C7C7C;
+	
+}
+
+
+.content-rg {
+	margin: 15px auto 30px auto;
+    padding: 10px 30px 30px 30px;
+	width: 90%;
+	height: 80%
+}
+
+.data-rg {
+  width: 100%;
+  padding-bottom: 30px;
+  margin-bottom: 5px
+  padding-left: 5px;
+  
+}
+
+.actions-rg {
+	width: 80%;
+	padding-left: 10%;
+	font-size: 12px;
+	margin: 0 auto 0 auto;
+}
+
+.actions-rg ul {
+    color: #FF530D;
+    list-style-type:none;
+    margin:0 auto 0 auto;
+    padding:0;
+}
+
+.actions-rg li {
+    display: inline;
+    text-decoration: none;
+    color: #FF530D;
+}
+
+.actions-rg a:hover {
+    color: #006DB1;
+}

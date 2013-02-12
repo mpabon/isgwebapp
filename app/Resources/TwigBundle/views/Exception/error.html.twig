@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>An Error Occurred: {{ status_text }}</title>
-</head>
-<body>
-    <h1>Oops! An Error Occusrred</h1>
-    <h2>The sserver returned a "{{ status_code }} {{ status_text }}". Que mal no??s</h2>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% block pageTitle %}ISG Project Sumbsission - Error {% endblock %}</title>
+  <link href="{{ asset('static/css/stylemain.css') }}" rel="stylesheet" type="text/css" />
+ </head>
+ 
+ <body>
+
+<div class="container-lg">
+ 
+ <div class="content-lg">
+    <h1>Oops! An Error Occurred</h1>
+    <p> We are working on fix it as soon as possible. Thank you for your understanding</p>
+ </div>
+
+</div> 
+
 </body>
 </html>

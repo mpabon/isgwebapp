@@ -1,0 +1,16 @@
+{% extends 'ISGProjectSubmissionAppBundle:Common:Registered/main.html.twig' %}
+
+{% block content %}
+
+<div class="container-reg"> 
+
+ <div class="header-lg"> <h3>Project Submission - Main Page</h3></div>
+ 
+ {%set p = roleTemplate%}
+ {% include 'ISGProjectSubmissionAppBundle:User:Profile/roles/' ~ roleTemplate ~ '.html.twig' %}
+ 
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% block pageTitle %}ISG Project Sumbsission {% endblock %}</title>
+  <link href="{{ asset('static/css/stylemain.css') }}" rel="stylesheet" type="text/css" />
+ </head>
+ <body>
+ {% block header %}
+ {% include 'ISGProjectSubmissionAppBundle:Common:Registered/header.html.twig' 
+       with {'user': user} 
+  %}
+ {% endblock %}
+ 
+ {% block content %}
+ {% endblock %}
+ 
+ 
+ {% block footer %}
+ {% endblock %}
+ 
+ </body>
+
+</html>
