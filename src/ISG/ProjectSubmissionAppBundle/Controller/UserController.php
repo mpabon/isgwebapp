@@ -45,7 +45,7 @@ class UserController extends Controller {
 			//echo $user;	
 			if($user=='{  }'){
 				$error = "Wrong Username or Password try again";
-				return $this->render('ISGProjectSubmissionAppBundle:User:login.html.twig', array('form' => $form->createView() , 'error' => $error));
+				return $this->render('ISGProjectSubmissionAppBundle:User:login/login.html.twig', array('form' => $form->createView() , 'error' => $error));
 			}	
 			else{
 				$salt = $user[0]->getSalt();
@@ -71,14 +71,14 @@ class UserController extends Controller {
 				}
 				else{
 					$error = "Wrong Username or Password try again";
-					return $this->render('ISGProjectSubmissionAppBundle:User:login.html.twig', array('form' => $form->createView() , 'error' => $error));
+					return $this->render('ISGProjectSubmissionAppBundle:User:login/login.html.twig', array('form' => $form->createView() , 'error' => $error));
 					
 				};
 				
 			}
 			
 		}
-        return $this->render('ISGProjectSubmissionAppBundle:User:login.html.twig', array('form' => $form->createView(),'error'=> $error,));
+        return $this->render('ISGProjectSubmissionAppBundle:User:login/login.html.twig', array('form' => $form->createView(),'error'=> $error,));
     }
     
     

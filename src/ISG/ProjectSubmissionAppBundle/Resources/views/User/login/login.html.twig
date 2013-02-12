@@ -7,22 +7,24 @@
  <div class="header-lg"> <h3>Project Submission</h3></div>
  <div class="content-lg">
  
+ 
+ {% if error != "" %}
  <div id="errors-lg" >
   
-  <p> The following erros were found </p>
-  <ul>
-   <li>Username Incorrect</li>
-   <li>Password Incorrect</li>
-   </ul>
+   {{ error }}
  
  </div>
  
- <div class="form-lg">
- <form action="/user/login" type="get">
-  
-  <div class="form-text-lg"> <span class="label-lg"> Username: </span> <input type="text" name="username"/> </div>
-  <div class="form-text-lg"> <span class="label-lg"> Password: </span><input type="password" name="password" /> </div>
  
+ 
+ {% endif %}
+ 
+ <div class="form-lg">
+<form action="{{ path('_mainIndex') }}" method="post" {{ form_enctype(form) }}>
+  
+  <div class="form-text-lg"> <span class="label-lg"> Username: </span> {{ form_widget(form.Username) }} </div>
+  <div class="form-text-lg"> <span class="label-lg"> Password: </span>{{ form_widget(form.password) }} </div>
+  {{form_rest(form)}}
   <div id="form-lg-error"> </div>
  
   <div class="form-lg-submit"> <input type="submit" name="Log In" value="Log In"/> </div>

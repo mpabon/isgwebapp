@@ -431,7 +431,7 @@ abstract class BaseUserPeer
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -441,7 +441,7 @@ abstract class BaseUserPeer
     {
         UserPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to User
      * by a foreign key with ON DELETE CASCADE
@@ -490,7 +490,7 @@ abstract class BaseUserPeer
 
         return array((int) $row[$startcol], (string) $row[$startcol + 1]);
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -501,7 +501,7 @@ abstract class BaseUserPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = UserPeer::getOMClass();
         // populate the object(s)
@@ -929,7 +929,6 @@ abstract class BaseUserPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += UserPeer::doOnDeleteCascade(new Criteria(UserPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con, UserPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -963,9 +962,15 @@ abstract class BaseUserPeer
         }
 
         if ($values instanceof Criteria) {
+            // invalidate the cache for all objects of this type, since we have no
+            // way of knowing (without running a query) what objects should be invalidated
+            // from the cache based on this Criteria.
+            UserPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof User) { // it's a model object
+            // invalidate the cache for this single object
+            UserPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
@@ -980,6 +985,8 @@ abstract class BaseUserPeer
                 $criterion = $criteria->getNewCriterion(UserPeer::ID, $value[0]);
                 $criterion->addAnd($criteria->getNewCriterion(UserPeer::USER_EMAIL, $value[1]));
                 $criteria->addOr($criterion);
+                // we can invalidate the cache for this single PK
+                UserPeer::removeInstanceFromPool($value);
             }
         }
 
@@ -992,24 +999,7 @@ abstract class BaseUserPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            $affectedRows += UserPeer::doOnDeleteCascade($c, $con);
-            
-            // Because this db requires some delete cascade/set null emulation, we have to
-            // clear the cached instance *after* the emulation has happened (since
-            // instances get re-added by the select statement contained therein).
-            if ($values instanceof Criteria) {
-                UserPeer::clearInstancePool();
-            } elseif ($values instanceof User) { // it's a model object
-                UserPeer::removeInstanceFromPool($values);
-            } else { // it's a primary key, or an array of pks
-                foreach ((array) $values as $singleval) {
-                    UserPeer::removeInstanceFromPool($singleval);
-                }
-            }
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             UserPeer::clearRelatedInstancePool();
             $con->commit();
@@ -1019,45 +1009,6 @@ abstract class BaseUserPeer
             $con->rollBack();
             throw $e;
         }
-    }
-
-    /**
-     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return int The number of affected rows (if supported by underlying database driver).
-     */
-    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-    {
-        // initialize var to track total num of affected rows
-        $affectedRows = 0;
-
-        // first find the objects that are implicated by the $criteria
-        $objects = UserPeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-
-            // delete related Profileuser objects
-            $criteria = new Criteria(ProfileuserPeer::DATABASE_NAME);
-            
-            $criteria->add(ProfileuserPeer::USER_ID, $obj->getId());
-            $affectedRows += ProfileuserPeer::doDelete($criteria, $con);
-
-            // delete related Project objects
-            $criteria = new Criteria(ProjectPeer::DATABASE_NAME);
-            
-            $criteria->add(ProjectPeer::USER_ID, $obj->getId());
-            $affectedRows += ProjectPeer::doDelete($criteria, $con);
-        }
-
-        return $affectedRows;
     }
 
     /**

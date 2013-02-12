@@ -409,7 +409,7 @@ abstract class BaseProjectPeer
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -419,7 +419,7 @@ abstract class BaseProjectPeer
     {
         ProjectPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to Project
      * by a foreign key with ON DELETE CASCADE
@@ -462,7 +462,7 @@ abstract class BaseProjectPeer
 
         return array((int) $row[$startcol], (int) $row[$startcol + 1]);
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -473,7 +473,7 @@ abstract class BaseProjectPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = ProjectPeer::getOMClass();
         // populate the object(s)
@@ -971,7 +971,7 @@ abstract class BaseProjectPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ProjectPeer::clearRelatedInstancePool();
             $con->commit();

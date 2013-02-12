@@ -144,7 +144,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return int
      */
     public function getId()
@@ -154,7 +154,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [user_id] column value.
-     * 
+     *
      * @return int
      */
     public function getUserId()
@@ -164,7 +164,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [project_id] column value.
-     * 
+     *
      * @return int
      */
     public function getProjectId()
@@ -174,7 +174,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [from] column value.
-     * 
+     *
      * @return string
      */
     public function getFrom()
@@ -184,7 +184,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [to] column value.
-     * 
+     *
      * @return string
      */
     public function getTo()
@@ -194,7 +194,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [subject] column value.
-     * 
+     *
      * @return string
      */
     public function getSubject()
@@ -204,7 +204,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [body] column value.
-     * 
+     *
      * @return string
      */
     public function getBody()
@@ -214,7 +214,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [sent_date] column value.
-     * 
+     *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -251,7 +251,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Get the [resent_count] column value.
-     * 
+     *
      * @return int
      */
     public function getResentCount()
@@ -261,7 +261,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param int $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -282,7 +282,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [user_id] column.
-     * 
+     *
      * @param int $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -307,7 +307,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [project_id] column.
-     * 
+     *
      * @param int $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -332,7 +332,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [from] column.
-     * 
+     *
      * @param string $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -353,7 +353,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [to] column.
-     * 
+     *
      * @param string $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -374,7 +374,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [subject] column.
-     * 
+     *
      * @param string $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -395,7 +395,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [body] column.
-     * 
+     *
      * @param string $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -416,7 +416,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Sets the value of [sent_date] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Email The current object (for fluent API support)
@@ -439,7 +439,7 @@ abstract class BaseEmail extends BaseObject implements Persistent
 
     /**
      * Set the value of [resent_count] column.
-     * 
+     *
      * @param int $v new value
      * @return Email The current object (for fluent API support)
      */
@@ -788,31 +788,31 @@ abstract class BaseEmail extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':						
+                    case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':						
+                    case '`USER_ID`':
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`PROJECT_ID`':						
+                    case '`PROJECT_ID`':
                         $stmt->bindValue($identifier, $this->project_id, PDO::PARAM_INT);
                         break;
-                    case '`FROM`':						
+                    case '`FROM`':
                         $stmt->bindValue($identifier, $this->from, PDO::PARAM_STR);
                         break;
-                    case '`TO`':						
+                    case '`TO`':
                         $stmt->bindValue($identifier, $this->to, PDO::PARAM_STR);
                         break;
-                    case '`SUBJECT`':						
+                    case '`SUBJECT`':
                         $stmt->bindValue($identifier, $this->subject, PDO::PARAM_STR);
                         break;
-                    case '`BODY`':						
+                    case '`BODY`':
                         $stmt->bindValue($identifier, $this->body, PDO::PARAM_STR);
                         break;
-                    case '`SENT_DATE`':						
+                    case '`SENT_DATE`':
                         $stmt->bindValue($identifier, $this->sent_date, PDO::PARAM_STR);
                         break;
-                    case '`RESENT_COUNT`':						
+                    case '`RESENT_COUNT`':
                         $stmt->bindValue($identifier, $this->resent_count, PDO::PARAM_INT);
                         break;
                 }

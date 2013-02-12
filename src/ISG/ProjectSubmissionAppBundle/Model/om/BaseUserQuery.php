@@ -185,7 +185,7 @@ abstract class BaseUserQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$id, $user_email]
      * @param     PropelPDO $con an optional connection object
      *
@@ -227,8 +227,8 @@ abstract class BaseUserQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `USER_EMAIL`, `USERNAME`, `USER_FIRSTNAME`, `USER_LASTNAME`, `PASSWORD`, `SALT`, `SUPERVISOR_QUOTA_1`, `ROLE_ID`, `STATUS`, `PROJECT_YEAR`, `DEPARTMENT`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON`, `SUPERVISOR_QUOTA_2`, `QUOTA_USED_1`, `QUOTA_USED_2` FROM `User` WHERE `ID` = :p0 AND `USER_EMAIL` = :p1';
         try {
-            $stmt = $con->prepare($sql);			
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);			
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {

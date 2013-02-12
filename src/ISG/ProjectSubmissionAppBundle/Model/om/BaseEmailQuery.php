@@ -121,7 +121,7 @@ abstract class BaseEmailQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34, 56), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$id, $user_id, $project_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -163,9 +163,9 @@ abstract class BaseEmailQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `USER_ID`, `PROJECT_ID`, `FROM`, `TO`, `SUBJECT`, `BODY`, `SENT_DATE`, `RESENT_COUNT` FROM `Email` WHERE `ID` = :p0 AND `USER_ID` = :p1 AND `PROJECT_ID` = :p2';
         try {
-            $stmt = $con->prepare($sql);			
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);			
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);			
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->bindValue(':p2', $key[2], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
