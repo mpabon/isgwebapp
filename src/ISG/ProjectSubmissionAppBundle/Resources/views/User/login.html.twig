@@ -1,0 +1,20 @@
+{% extends '::main.html.twig' %}
+
+{% block content %}
+<p>Login</p>
+
+
+
+<form action="{{ path('_mainIndex') }}" method="post" {{ form_enctype(form) }}
+ {{ form_widget(form) }}
+ <input type="submit" />
+</form> 
+
+<form action="{{ path('_register') }}">
+ <input type="submit" name="register" value="Register User" />
+</form> 
+
+{% if error %}
+<div>{{ error }}</div>
+{% endif %}
+{% endblock %}

@@ -16,7 +16,12 @@ _test_fetching:
 _user_enter:
     pattern: /user/enter.php
     defaults : {_controller: ISGProjectSubmissionAppBundle:User:enter }    
-
+     
+_register:
+    pattern: /register
+    defaults : {_controller: ISGProjectSubmissionAppBundle:User:register } 
+       
 _user_show:
     pattern:  /user/show/{name}
     defaults: { _controller: ISGProjectSubmissionAppBundle:User:show }
+

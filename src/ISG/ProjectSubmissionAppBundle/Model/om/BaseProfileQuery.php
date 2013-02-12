@@ -108,7 +108,7 @@ abstract class BaseProfileQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Profile|Profile[]|mixed the result, formatted by the current formatter
@@ -149,7 +149,7 @@ abstract class BaseProfileQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `NAME`, `DESCRIPTION`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `Profile` WHERE `ID` = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);			
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {

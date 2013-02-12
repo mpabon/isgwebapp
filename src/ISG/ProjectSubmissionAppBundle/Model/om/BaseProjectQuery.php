@@ -155,7 +155,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$id, $user_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -197,8 +197,8 @@ abstract class BaseProjectQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `USER_ID`, `SUPERVISOR_ID`, `PHYSICAL_COPY_SUBMITTED`, `ALTERNATE_EMAIL_ID`, `TITLE`, `PROBLEM_STATEMENT`, `SUPERVISOR_COMMENTS`, `STATUS`, `SECOND_MARKER_ID`, `THIRD_MARKER_ID`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `Project` WHERE `ID` = :p0 AND `USER_ID` = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);			
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);			
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {

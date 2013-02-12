@@ -116,7 +116,7 @@ abstract class BaseRoleQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Role|Role[]|mixed the result, formatted by the current formatter
@@ -157,7 +157,7 @@ abstract class BaseRoleQuery extends ModelCriteria
     {
         $sql = 'SELECT `ID`, `STATUS`, `DESCRIPTION`, `VALID_FROM`, `VALID_UNTIL`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `Role` WHERE `ID` = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);			
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {

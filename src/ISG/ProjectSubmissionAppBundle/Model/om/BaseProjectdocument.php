@@ -140,7 +140,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return int
      */
     public function getId()
@@ -150,7 +150,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [user_id] column value.
-     *
+     * 
      * @return int
      */
     public function getUserId()
@@ -160,7 +160,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [project_id] column value.
-     *
+     * 
      * @return int
      */
     public function getProjectId()
@@ -170,7 +170,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [version] column value.
-     *
+     * 
      * @return string
      */
     public function getVersion()
@@ -180,7 +180,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [type] column value.
-     *
+     * 
      * @return string
      */
     public function getType()
@@ -190,7 +190,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [name] column value.
-     *
+     * 
      * @return string
      */
     public function getName()
@@ -200,7 +200,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [status] column value.
-     *
+     * 
      * @return string
      */
     public function getStatus()
@@ -210,7 +210,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [document] column value.
-     *
+     * 
      * @return string
      */
     public function getDocument()
@@ -220,7 +220,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [created_by] column value.
-     *
+     * 
      * @return int
      */
     public function getCreatedBy()
@@ -230,7 +230,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [created_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -267,7 +267,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [modified_by] column value.
-     *
+     * 
      * @return int
      */
     public function getModifiedBy()
@@ -277,7 +277,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Get the [optionally formatted] temporal [modified_on] column value.
-     *
+     * 
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
@@ -314,7 +314,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -335,7 +335,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [user_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -360,7 +360,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [project_id] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -385,7 +385,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [version] column.
-     *
+     * 
      * @param string $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -406,7 +406,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [type] column.
-     *
+     * 
      * @param string $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -427,7 +427,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [name] column.
-     *
+     * 
      * @param string $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -448,7 +448,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [status] column.
-     *
+     * 
      * @param string $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -469,7 +469,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [document] column.
-     *
+     * 
      * @param string $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -490,7 +490,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [created_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -511,7 +511,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Sets the value of [created_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Projectdocument The current object (for fluent API support)
@@ -534,7 +534,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [modified_by] column.
-     *
+     * 
      * @param int $v new value
      * @return Projectdocument The current object (for fluent API support)
      */
@@ -555,7 +555,7 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
 
     /**
      * Sets the value of [modified_on] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Projectdocument The current object (for fluent API support)
@@ -914,40 +914,40 @@ abstract class BaseProjectdocument extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`ID`':						
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':
+                    case '`USER_ID`':						
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`PROJECT_ID`':
+                    case '`PROJECT_ID`':						
                         $stmt->bindValue($identifier, $this->project_id, PDO::PARAM_INT);
                         break;
-                    case '`VERSION`':
+                    case '`VERSION`':						
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_STR);
                         break;
-                    case '`TYPE`':
+                    case '`TYPE`':						
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
                         break;
-                    case '`NAME`':
+                    case '`NAME`':						
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`STATUS`':
+                    case '`STATUS`':						
                         $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
                         break;
-                    case '`DOCUMENT`':
+                    case '`DOCUMENT`':						
                         $stmt->bindValue($identifier, $this->document, PDO::PARAM_STR);
                         break;
-                    case '`CREATED_BY`':
+                    case '`CREATED_BY`':						
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case '`CREATED_ON`':
+                    case '`CREATED_ON`':						
                         $stmt->bindValue($identifier, $this->created_on, PDO::PARAM_STR);
                         break;
-                    case '`MODIFIED_BY`':
+                    case '`MODIFIED_BY`':						
                         $stmt->bindValue($identifier, $this->modified_by, PDO::PARAM_INT);
                         break;
-                    case '`MODIFIED_ON`':
+                    case '`MODIFIED_ON`':						
                         $stmt->bindValue($identifier, $this->modified_on, PDO::PARAM_STR);
                         break;
                 }

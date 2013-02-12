@@ -1,0 +1,17 @@
+{% extends '::main.html.twig' %}
+
+{% block content %}
+<p>Register</p>
+
+
+
+<form action="{{ path('_register') }}" method="post" {{ form_enctype(form) }}
+ {{ form_widget(form) }}
+ <input type="submit" value="Register Now!"/>
+</form> 
+
+{%if error%}
+<p>{{ error }}</p>
+{%endif%}
+
+{% endblock %}
