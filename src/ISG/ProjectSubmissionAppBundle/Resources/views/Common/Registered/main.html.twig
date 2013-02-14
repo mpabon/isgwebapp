@@ -7,11 +7,12 @@
  </head>
  <body>
  {% block header %}
- {% include 'ISGProjectSubmissionAppBundle:Common:Registered/header.html.twig' 
-       with {'user': user} 
-  %}
- {% endblock %}
- 
+   {% if user is defined %}
+   {% include 'ISGProjectSubmissionAppBundle:Common:Registered/header.html.twig'  with {'user': user} %}
+   {% endif %}
+   
+   {% endblock %}
+   
  {% block content %}
  {% endblock %}
  

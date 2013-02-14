@@ -2,6 +2,10 @@ _mainIndex:
     pattern: /
     defaults : {_controller: ISGProjectSubmissionAppBundle:User:login }
 
+_userLogin:
+    pattern: /user/login
+    defaults : {_controller: ISGProjectSubmissionAppBundle:User:login }
+
 _userProfile:
     pattern: /user/profile/{id}
     defaults : {_controller: ISGProjectSubmissionAppBundle:User:profile }
@@ -16,11 +20,11 @@ _test_fetching:
 _user_enter:
     pattern: /user/enter.php
     defaults : {_controller: ISGProjectSubmissionAppBundle:User:enter }    
-     
-_register:
-    pattern: /register
-    defaults : {_controller: ISGProjectSubmissionAppBundle:User:register } 
-       
+
+_userNew:
+    pattern : /user/new
+    defaults : {_controller: ISGProjectSubmissionAppBundle:User:new } 
+    
 _user_show:
     pattern:  /user/show/{name}
     defaults: { _controller: ISGProjectSubmissionAppBundle:User:show }

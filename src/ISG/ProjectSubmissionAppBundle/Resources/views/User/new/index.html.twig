@@ -1,0 +1,43 @@
+{% extends 'ISGProjectSubmissionAppBundle:Common:Registered/main.html.twig' %}
+
+{% block content %}
+
+<div class="container-reg"> 
+
+ <div class="header-lg"> <h3>Project Submission - Create User</h3></div>
+ 
+  {% if error != "" %}
+ <div id="errors-lg" >
+  
+   {{ error }}
+ 
+ </div>
+ 
+ {% endif %}
+  <div class="form-lg">
+   <form action="{{ path('_mainIndex') }}" method="post" {{ form_enctype(form) }}>
+  
+    <div class="form-text-lg"> <span class="label-lg"> Email: </span> {{ form_widget(form.User_Email) }} </div>
+    <div class="form-text-lg"> <span class="label-lg"> Username: </span>{{ form_widget(form.Username) }} </div>
+      <div class="form-text-lg"> <span class="label-lg"> First Name: </span>{{ form_widget(form.Firstname) }} </div>
+      <div class="form-text-lg"> <span class="label-lg"> Last Name: </span>{{ form_widget(form.Lastname) }} </div>
+      <div class="form-text-lg"> <span class="label-lg"> Password: </span>{{ form_widget(form.password) }} </div>
+      <div class="form-text-lg"> <span class="label-lg"> Repeat Password: </span>{{ form_widget(form.Repeat_Password) }} </div>
+    
+     {{form_rest(form)}}
+      <div id="form-lg-error"> </div>
+ 
+      <div class="form-lg-submit"> <input type="submit" name="Log In" value="Log In"/> </div>
+ 
+ </form>
+   
+
+{%if error%}
+<p>{{ error }}</p>
+{%endif%}
+ 
+
+</div>
+
+
+{% endblock %}
