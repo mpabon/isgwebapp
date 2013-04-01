@@ -9,70 +9,60 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use ISG\ProjectSubmissionAppBundle\Model\Role;
-use ISG\ProjectSubmissionAppBundle\Model\RolePeer;
-use ISG\ProjectSubmissionAppBundle\Model\UserPeer;
-use ISG\ProjectSubmissionAppBundle\Model\map\RoleTableMap;
+use ISG\ProjectSubmissionAppBundle\Model\Appstatus;
+use ISG\ProjectSubmissionAppBundle\Model\AppstatusPeer;
+use ISG\ProjectSubmissionAppBundle\Model\map\AppstatusTableMap;
 
-abstract class BaseRolePeer
+abstract class BaseAppstatusPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'Role';
+    const TABLE_NAME = 'AppStatus';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'ISG\\ProjectSubmissionAppBundle\\Model\\Role';
+    const OM_CLASS = 'ISG\\ProjectSubmissionAppBundle\\Model\\Appstatus';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'RoleTableMap';
+    const TM_CLASS = 'AppstatusTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the ID field */
-    const ID = 'Role.ID';
+    const ID = 'AppStatus.ID';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'Role.DESCRIPTION';
+    /** the column name for the NAME field */
+    const NAME = 'AppStatus.NAME';
 
-    /** the column name for the STATUS field */
-    const STATUS = 'Role.STATUS';
+    /** the column name for the ACTIVE_FROM field */
+    const ACTIVE_FROM = 'AppStatus.ACTIVE_FROM';
 
-    /** the column name for the VALID_FROM field */
-    const VALID_FROM = 'Role.VALID_FROM';
-
-    /** the column name for the VALID_UNTIL field */
-    const VALID_UNTIL = 'Role.VALID_UNTIL';
-
-    /** the column name for the CREATED_BY field */
-    const CREATED_BY = 'Role.CREATED_BY';
-
-    /** the column name for the CREATED_ON field */
-    const CREATED_ON = 'Role.CREATED_ON';
+    /** the column name for the ACTIVE_UNTILL field */
+    const ACTIVE_UNTILL = 'AppStatus.ACTIVE_UNTILL';
 
     /** the column name for the MODIFIED_BY field */
-    const MODIFIED_BY = 'Role.MODIFIED_BY';
+    const MODIFIED_BY = 'AppStatus.MODIFIED_BY';
 
     /** the column name for the MODIFIED_ON field */
-    const MODIFIED_ON = 'Role.MODIFIED_ON';
+    const MODIFIED_ON = 'AppStatus.MODIFIED_ON';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of Role objects.
+     * An identiy map to hold any loaded instances of Appstatus objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Role[]
+     * @var        array Appstatus[]
      */
     public static $instances = array();
 
@@ -81,30 +71,30 @@ abstract class BaseRolePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. RolePeer::$fieldNames[RolePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. AppstatusPeer::$fieldNames[AppstatusPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Description', 'Status', 'ValidFrom', 'ValidUntil', 'CreatedBy', 'CreatedOn', 'ModifiedBy', 'ModifiedOn', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'description', 'status', 'validFrom', 'validUntil', 'createdBy', 'createdOn', 'modifiedBy', 'modifiedOn', ),
-        BasePeer::TYPE_COLNAME => array (RolePeer::ID, RolePeer::DESCRIPTION, RolePeer::STATUS, RolePeer::VALID_FROM, RolePeer::VALID_UNTIL, RolePeer::CREATED_BY, RolePeer::CREATED_ON, RolePeer::MODIFIED_BY, RolePeer::MODIFIED_ON, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'DESCRIPTION', 'STATUS', 'VALID_FROM', 'VALID_UNTIL', 'CREATED_BY', 'CREATED_ON', 'MODIFIED_BY', 'MODIFIED_ON', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'description', 'status', 'valid_from', 'valid_until', 'created_by', 'created_on', 'modified_by', 'modified_on', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'ActiveFrom', 'ActiveUntill', 'ModifiedBy', 'ModifiedOn', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'activeFrom', 'activeUntill', 'modifiedBy', 'modifiedOn', ),
+        BasePeer::TYPE_COLNAME => array (AppstatusPeer::ID, AppstatusPeer::NAME, AppstatusPeer::ACTIVE_FROM, AppstatusPeer::ACTIVE_UNTILL, AppstatusPeer::MODIFIED_BY, AppstatusPeer::MODIFIED_ON, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ACTIVE_FROM', 'ACTIVE_UNTILL', 'MODIFIED_BY', 'MODIFIED_ON', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'active_from', 'active_untill', 'modified_by', 'modified_on', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. RolePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. AppstatusPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Description' => 1, 'Status' => 2, 'ValidFrom' => 3, 'ValidUntil' => 4, 'CreatedBy' => 5, 'CreatedOn' => 6, 'ModifiedBy' => 7, 'ModifiedOn' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'description' => 1, 'status' => 2, 'validFrom' => 3, 'validUntil' => 4, 'createdBy' => 5, 'createdOn' => 6, 'modifiedBy' => 7, 'modifiedOn' => 8, ),
-        BasePeer::TYPE_COLNAME => array (RolePeer::ID => 0, RolePeer::DESCRIPTION => 1, RolePeer::STATUS => 2, RolePeer::VALID_FROM => 3, RolePeer::VALID_UNTIL => 4, RolePeer::CREATED_BY => 5, RolePeer::CREATED_ON => 6, RolePeer::MODIFIED_BY => 7, RolePeer::MODIFIED_ON => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'DESCRIPTION' => 1, 'STATUS' => 2, 'VALID_FROM' => 3, 'VALID_UNTIL' => 4, 'CREATED_BY' => 5, 'CREATED_ON' => 6, 'MODIFIED_BY' => 7, 'MODIFIED_ON' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'description' => 1, 'status' => 2, 'valid_from' => 3, 'valid_until' => 4, 'created_by' => 5, 'created_on' => 6, 'modified_by' => 7, 'modified_on' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'ActiveFrom' => 2, 'ActiveUntill' => 3, 'ModifiedBy' => 4, 'ModifiedOn' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'activeFrom' => 2, 'activeUntill' => 3, 'modifiedBy' => 4, 'modifiedOn' => 5, ),
+        BasePeer::TYPE_COLNAME => array (AppstatusPeer::ID => 0, AppstatusPeer::NAME => 1, AppstatusPeer::ACTIVE_FROM => 2, AppstatusPeer::ACTIVE_UNTILL => 3, AppstatusPeer::MODIFIED_BY => 4, AppstatusPeer::MODIFIED_ON => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ACTIVE_FROM' => 2, 'ACTIVE_UNTILL' => 3, 'MODIFIED_BY' => 4, 'MODIFIED_ON' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'active_from' => 2, 'active_untill' => 3, 'modified_by' => 4, 'modified_on' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -119,10 +109,10 @@ abstract class BaseRolePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = RolePeer::getFieldNames($toType);
-        $key = isset(RolePeer::$fieldKeys[$fromType][$name]) ? RolePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = AppstatusPeer::getFieldNames($toType);
+        $key = isset(AppstatusPeer::$fieldKeys[$fromType][$name]) ? AppstatusPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(RolePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(AppstatusPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -139,11 +129,11 @@ abstract class BaseRolePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, RolePeer::$fieldNames)) {
+        if (!array_key_exists($type, AppstatusPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return RolePeer::$fieldNames[$type];
+        return AppstatusPeer::$fieldNames[$type];
     }
 
     /**
@@ -155,12 +145,12 @@ abstract class BaseRolePeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. RolePeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. AppstatusPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(RolePeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(AppstatusPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -178,23 +168,17 @@ abstract class BaseRolePeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(RolePeer::ID);
-            $criteria->addSelectColumn(RolePeer::DESCRIPTION);
-            $criteria->addSelectColumn(RolePeer::STATUS);
-            $criteria->addSelectColumn(RolePeer::VALID_FROM);
-            $criteria->addSelectColumn(RolePeer::VALID_UNTIL);
-            $criteria->addSelectColumn(RolePeer::CREATED_BY);
-            $criteria->addSelectColumn(RolePeer::CREATED_ON);
-            $criteria->addSelectColumn(RolePeer::MODIFIED_BY);
-            $criteria->addSelectColumn(RolePeer::MODIFIED_ON);
+            $criteria->addSelectColumn(AppstatusPeer::ID);
+            $criteria->addSelectColumn(AppstatusPeer::NAME);
+            $criteria->addSelectColumn(AppstatusPeer::ACTIVE_FROM);
+            $criteria->addSelectColumn(AppstatusPeer::ACTIVE_UNTILL);
+            $criteria->addSelectColumn(AppstatusPeer::MODIFIED_BY);
+            $criteria->addSelectColumn(AppstatusPeer::MODIFIED_ON);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.DESCRIPTION');
-            $criteria->addSelectColumn($alias . '.STATUS');
-            $criteria->addSelectColumn($alias . '.VALID_FROM');
-            $criteria->addSelectColumn($alias . '.VALID_UNTIL');
-            $criteria->addSelectColumn($alias . '.CREATED_BY');
-            $criteria->addSelectColumn($alias . '.CREATED_ON');
+            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.ACTIVE_FROM');
+            $criteria->addSelectColumn($alias . '.ACTIVE_UNTILL');
             $criteria->addSelectColumn($alias . '.MODIFIED_BY');
             $criteria->addSelectColumn($alias . '.MODIFIED_ON');
         }
@@ -216,21 +200,21 @@ abstract class BaseRolePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(RolePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(AppstatusPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            RolePeer::addSelectColumns($criteria);
+            AppstatusPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(RolePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(AppstatusPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -249,7 +233,7 @@ abstract class BaseRolePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 Role
+     * @return                 Appstatus
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -257,7 +241,7 @@ abstract class BaseRolePeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = RolePeer::doSelect($critcopy, $con);
+        $objects = AppstatusPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -275,7 +259,7 @@ abstract class BaseRolePeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return RolePeer::populateObjects(RolePeer::doSelectStmt($criteria, $con));
+        return AppstatusPeer::populateObjects(AppstatusPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -293,16 +277,16 @@ abstract class BaseRolePeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            RolePeer::addSelectColumns($criteria);
+            AppstatusPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(RolePeer::DATABASE_NAME);
+        $criteria->setDbName(AppstatusPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -316,7 +300,7 @@ abstract class BaseRolePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      Role $obj A Role object.
+     * @param      Appstatus $obj A Appstatus object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -325,7 +309,7 @@ abstract class BaseRolePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            RolePeer::$instances[$key] = $obj;
+            AppstatusPeer::$instances[$key] = $obj;
         }
     }
 
@@ -337,7 +321,7 @@ abstract class BaseRolePeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Role object or a primary key value.
+     * @param      mixed $value A Appstatus object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -345,17 +329,17 @@ abstract class BaseRolePeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Role) {
+            if (is_object($value) && $value instanceof Appstatus) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Role object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Appstatus object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(RolePeer::$instances[$key]);
+            unset(AppstatusPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -366,14 +350,14 @@ abstract class BaseRolePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Role Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Appstatus Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(RolePeer::$instances[$key])) {
-                return RolePeer::$instances[$key];
+            if (isset(AppstatusPeer::$instances[$key])) {
+                return AppstatusPeer::$instances[$key];
             }
         }
 
@@ -387,18 +371,15 @@ abstract class BaseRolePeer
      */
     public static function clearInstancePool()
     {
-        RolePeer::$instances = array();
+        AppstatusPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to Role
+     * Method to invalidate the instance pool of all tables related to AppStatus
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in UserPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        UserPeer::clearInstancePool();
     }
 
     /**
@@ -448,11 +429,11 @@ abstract class BaseRolePeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = RolePeer::getOMClass();
+        $cls = AppstatusPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = RolePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = RolePeer::getInstanceFromPool($key))) {
+            $key = AppstatusPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = AppstatusPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -461,7 +442,7 @@ abstract class BaseRolePeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                RolePeer::addInstanceToPool($obj, $key);
+                AppstatusPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -475,21 +456,21 @@ abstract class BaseRolePeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Role object, last column rank)
+     * @return array (Appstatus object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = RolePeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = RolePeer::getInstanceFromPool($key))) {
+        $key = AppstatusPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = AppstatusPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + RolePeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + AppstatusPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = RolePeer::OM_CLASS;
+            $cls = AppstatusPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            RolePeer::addInstanceToPool($obj, $key);
+            AppstatusPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -504,7 +485,7 @@ abstract class BaseRolePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(RolePeer::DATABASE_NAME)->getTable(RolePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(AppstatusPeer::DATABASE_NAME)->getTable(AppstatusPeer::TABLE_NAME);
     }
 
     /**
@@ -512,9 +493,9 @@ abstract class BaseRolePeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseRolePeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseRolePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new RoleTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseAppstatusPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseAppstatusPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new AppstatusTableMap());
       }
     }
 
@@ -526,13 +507,13 @@ abstract class BaseRolePeer
      */
     public static function getOMClass()
     {
-        return RolePeer::OM_CLASS;
+        return AppstatusPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Role or Criteria object.
+     * Performs an INSERT on the database, given a Appstatus or Criteria object.
      *
-     * @param      mixed $values Criteria or Role object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Appstatus object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -541,22 +522,22 @@ abstract class BaseRolePeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Role object
+            $criteria = $values->buildCriteria(); // build Criteria from Appstatus object
         }
 
-        if ($criteria->containsKey(RolePeer::ID) && $criteria->keyContainsValue(RolePeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.RolePeer::ID.')');
+        if ($criteria->containsKey(AppstatusPeer::ID) && $criteria->keyContainsValue(AppstatusPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.AppstatusPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(RolePeer::DATABASE_NAME);
+        $criteria->setDbName(AppstatusPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -573,9 +554,9 @@ abstract class BaseRolePeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Role or Criteria object.
+     * Performs an UPDATE on the database, given a Appstatus or Criteria object.
      *
-     * @param      mixed $values Criteria or Role object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Appstatus object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -584,35 +565,35 @@ abstract class BaseRolePeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(RolePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(AppstatusPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(RolePeer::ID);
-            $value = $criteria->remove(RolePeer::ID);
+            $comparison = $criteria->getComparison(AppstatusPeer::ID);
+            $value = $criteria->remove(AppstatusPeer::ID);
             if ($value) {
-                $selectCriteria->add(RolePeer::ID, $value, $comparison);
+                $selectCriteria->add(AppstatusPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(RolePeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(AppstatusPeer::TABLE_NAME);
             }
 
-        } else { // $values is Role object
+        } else { // $values is Appstatus object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(RolePeer::DATABASE_NAME);
+        $criteria->setDbName(AppstatusPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the Role table.
+     * Deletes all rows from the AppStatus table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -621,19 +602,19 @@ abstract class BaseRolePeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(RolePeer::TABLE_NAME, $con, RolePeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(AppstatusPeer::TABLE_NAME, $con, AppstatusPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            RolePeer::clearInstancePool();
-            RolePeer::clearRelatedInstancePool();
+            AppstatusPeer::clearInstancePool();
+            AppstatusPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -644,9 +625,9 @@ abstract class BaseRolePeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Role or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Appstatus or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Role object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Appstatus object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -657,32 +638,32 @@ abstract class BaseRolePeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            RolePeer::clearInstancePool();
+            AppstatusPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Role) { // it's a model object
+        } elseif ($values instanceof Appstatus) { // it's a model object
             // invalidate the cache for this single object
-            RolePeer::removeInstanceFromPool($values);
+            AppstatusPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(RolePeer::DATABASE_NAME);
-            $criteria->add(RolePeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(AppstatusPeer::DATABASE_NAME);
+            $criteria->add(AppstatusPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                RolePeer::removeInstanceFromPool($singleval);
+                AppstatusPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(RolePeer::DATABASE_NAME);
+        $criteria->setDbName(AppstatusPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -692,7 +673,7 @@ abstract class BaseRolePeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            RolePeer::clearRelatedInstancePool();
+            AppstatusPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -703,13 +684,13 @@ abstract class BaseRolePeer
     }
 
     /**
-     * Validates all modified columns of given Role object.
+     * Validates all modified columns of given Appstatus object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      Role $obj The object to validate.
+     * @param      Appstatus $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -719,8 +700,8 @@ abstract class BaseRolePeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(RolePeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(RolePeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(AppstatusPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(AppstatusPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -736,7 +717,7 @@ abstract class BaseRolePeer
 
         }
 
-        return BasePeer::doValidate(RolePeer::DATABASE_NAME, RolePeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(AppstatusPeer::DATABASE_NAME, AppstatusPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -744,23 +725,23 @@ abstract class BaseRolePeer
      *
      * @param      int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Role
+     * @return Appstatus
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = RolePeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = AppstatusPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(RolePeer::DATABASE_NAME);
-        $criteria->add(RolePeer::ID, $pk);
+        $criteria = new Criteria(AppstatusPeer::DATABASE_NAME);
+        $criteria->add(AppstatusPeer::ID, $pk);
 
-        $v = RolePeer::doSelect($criteria, $con);
+        $v = AppstatusPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -770,31 +751,31 @@ abstract class BaseRolePeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Role[]
+     * @return Appstatus[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(RolePeer::DATABASE_NAME);
-            $criteria->add(RolePeer::ID, $pks, Criteria::IN);
-            $objs = RolePeer::doSelect($criteria, $con);
+            $criteria = new Criteria(AppstatusPeer::DATABASE_NAME);
+            $criteria->add(AppstatusPeer::ID, $pks, Criteria::IN);
+            $objs = AppstatusPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseRolePeer
+} // BaseAppstatusPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseRolePeer::buildTableMap();
+BaseAppstatusPeer::buildTableMap();
 

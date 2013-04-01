@@ -32,13 +32,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 20;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 20;
 
     /** the column name for the ID field */
     const ID = 'User.ID';
@@ -60,6 +60,9 @@ abstract class BaseUserPeer
 
     /** the column name for the SALT field */
     const SALT = 'User.SALT';
+
+    /** the column name for the PHONE_NUMBER field */
+    const PHONE_NUMBER = 'User.PHONE_NUMBER';
 
     /** the column name for the SUPERVISOR_QUOTA_1 field */
     const SUPERVISOR_QUOTA_1 = 'User.SUPERVISOR_QUOTA_1';
@@ -116,12 +119,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserEmail', 'Username', 'UserFirstname', 'UserLastname', 'Password', 'Salt', 'SupervisorQuota1', 'RoleId', 'Status', 'ProjectYear', 'Department', 'CreatedBy', 'CreatedOn', 'ModifiedBy', 'ModifiedOn', 'SupervisorQuota2', 'QuotaUsed1', 'QuotaUsed2', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userEmail', 'username', 'userFirstname', 'userLastname', 'password', 'salt', 'supervisorQuota1', 'roleId', 'status', 'projectYear', 'department', 'createdBy', 'createdOn', 'modifiedBy', 'modifiedOn', 'supervisorQuota2', 'quotaUsed1', 'quotaUsed2', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USER_EMAIL, UserPeer::USERNAME, UserPeer::USER_FIRSTNAME, UserPeer::USER_LASTNAME, UserPeer::PASSWORD, UserPeer::SALT, UserPeer::SUPERVISOR_QUOTA_1, UserPeer::ROLE_ID, UserPeer::STATUS, UserPeer::PROJECT_YEAR, UserPeer::DEPARTMENT, UserPeer::CREATED_BY, UserPeer::CREATED_ON, UserPeer::MODIFIED_BY, UserPeer::MODIFIED_ON, UserPeer::SUPERVISOR_QUOTA_2, UserPeer::QUOTA_USED_1, UserPeer::QUOTA_USED_2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_EMAIL', 'USERNAME', 'USER_FIRSTNAME', 'USER_LASTNAME', 'PASSWORD', 'SALT', 'SUPERVISOR_QUOTA_1', 'ROLE_ID', 'STATUS', 'PROJECT_YEAR', 'DEPARTMENT', 'CREATED_BY', 'CREATED_ON', 'MODIFIED_BY', 'MODIFIED_ON', 'SUPERVISOR_QUOTA_2', 'QUOTA_USED_1', 'QUOTA_USED_2', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_email', 'username', 'user_firstname', 'user_lastname', 'password', 'salt', 'supervisor_quota_1', 'role_id', 'status', 'project_year', 'department', 'created_by', 'created_on', 'modified_by', 'modified_on', 'supervisor_quota_2', 'quota_used_1', 'quota_used_2', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserEmail', 'Username', 'UserFirstname', 'UserLastname', 'Password', 'Salt', 'PhoneNumber', 'SupervisorQuota1', 'RoleId', 'Status', 'ProjectYear', 'Department', 'CreatedBy', 'CreatedOn', 'ModifiedBy', 'ModifiedOn', 'SupervisorQuota2', 'QuotaUsed1', 'QuotaUsed2', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userEmail', 'username', 'userFirstname', 'userLastname', 'password', 'salt', 'phoneNumber', 'supervisorQuota1', 'roleId', 'status', 'projectYear', 'department', 'createdBy', 'createdOn', 'modifiedBy', 'modifiedOn', 'supervisorQuota2', 'quotaUsed1', 'quotaUsed2', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USER_EMAIL, UserPeer::USERNAME, UserPeer::USER_FIRSTNAME, UserPeer::USER_LASTNAME, UserPeer::PASSWORD, UserPeer::SALT, UserPeer::PHONE_NUMBER, UserPeer::SUPERVISOR_QUOTA_1, UserPeer::ROLE_ID, UserPeer::STATUS, UserPeer::PROJECT_YEAR, UserPeer::DEPARTMENT, UserPeer::CREATED_BY, UserPeer::CREATED_ON, UserPeer::MODIFIED_BY, UserPeer::MODIFIED_ON, UserPeer::SUPERVISOR_QUOTA_2, UserPeer::QUOTA_USED_1, UserPeer::QUOTA_USED_2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_EMAIL', 'USERNAME', 'USER_FIRSTNAME', 'USER_LASTNAME', 'PASSWORD', 'SALT', 'PHONE_NUMBER', 'SUPERVISOR_QUOTA_1', 'ROLE_ID', 'STATUS', 'PROJECT_YEAR', 'DEPARTMENT', 'CREATED_BY', 'CREATED_ON', 'MODIFIED_BY', 'MODIFIED_ON', 'SUPERVISOR_QUOTA_2', 'QUOTA_USED_1', 'QUOTA_USED_2', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_email', 'username', 'user_firstname', 'user_lastname', 'password', 'salt', 'phone_number', 'supervisor_quota_1', 'role_id', 'status', 'project_year', 'department', 'created_by', 'created_on', 'modified_by', 'modified_on', 'supervisor_quota_2', 'quota_used_1', 'quota_used_2', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -131,12 +134,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserEmail' => 1, 'Username' => 2, 'UserFirstname' => 3, 'UserLastname' => 4, 'Password' => 5, 'Salt' => 6, 'SupervisorQuota1' => 7, 'RoleId' => 8, 'Status' => 9, 'ProjectYear' => 10, 'Department' => 11, 'CreatedBy' => 12, 'CreatedOn' => 13, 'ModifiedBy' => 14, 'ModifiedOn' => 15, 'SupervisorQuota2' => 16, 'QuotaUsed1' => 17, 'QuotaUsed2' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userEmail' => 1, 'username' => 2, 'userFirstname' => 3, 'userLastname' => 4, 'password' => 5, 'salt' => 6, 'supervisorQuota1' => 7, 'roleId' => 8, 'status' => 9, 'projectYear' => 10, 'department' => 11, 'createdBy' => 12, 'createdOn' => 13, 'modifiedBy' => 14, 'modifiedOn' => 15, 'supervisorQuota2' => 16, 'quotaUsed1' => 17, 'quotaUsed2' => 18, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USER_EMAIL => 1, UserPeer::USERNAME => 2, UserPeer::USER_FIRSTNAME => 3, UserPeer::USER_LASTNAME => 4, UserPeer::PASSWORD => 5, UserPeer::SALT => 6, UserPeer::SUPERVISOR_QUOTA_1 => 7, UserPeer::ROLE_ID => 8, UserPeer::STATUS => 9, UserPeer::PROJECT_YEAR => 10, UserPeer::DEPARTMENT => 11, UserPeer::CREATED_BY => 12, UserPeer::CREATED_ON => 13, UserPeer::MODIFIED_BY => 14, UserPeer::MODIFIED_ON => 15, UserPeer::SUPERVISOR_QUOTA_2 => 16, UserPeer::QUOTA_USED_1 => 17, UserPeer::QUOTA_USED_2 => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_EMAIL' => 1, 'USERNAME' => 2, 'USER_FIRSTNAME' => 3, 'USER_LASTNAME' => 4, 'PASSWORD' => 5, 'SALT' => 6, 'SUPERVISOR_QUOTA_1' => 7, 'ROLE_ID' => 8, 'STATUS' => 9, 'PROJECT_YEAR' => 10, 'DEPARTMENT' => 11, 'CREATED_BY' => 12, 'CREATED_ON' => 13, 'MODIFIED_BY' => 14, 'MODIFIED_ON' => 15, 'SUPERVISOR_QUOTA_2' => 16, 'QUOTA_USED_1' => 17, 'QUOTA_USED_2' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_email' => 1, 'username' => 2, 'user_firstname' => 3, 'user_lastname' => 4, 'password' => 5, 'salt' => 6, 'supervisor_quota_1' => 7, 'role_id' => 8, 'status' => 9, 'project_year' => 10, 'department' => 11, 'created_by' => 12, 'created_on' => 13, 'modified_by' => 14, 'modified_on' => 15, 'supervisor_quota_2' => 16, 'quota_used_1' => 17, 'quota_used_2' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserEmail' => 1, 'Username' => 2, 'UserFirstname' => 3, 'UserLastname' => 4, 'Password' => 5, 'Salt' => 6, 'PhoneNumber' => 7, 'SupervisorQuota1' => 8, 'RoleId' => 9, 'Status' => 10, 'ProjectYear' => 11, 'Department' => 12, 'CreatedBy' => 13, 'CreatedOn' => 14, 'ModifiedBy' => 15, 'ModifiedOn' => 16, 'SupervisorQuota2' => 17, 'QuotaUsed1' => 18, 'QuotaUsed2' => 19, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userEmail' => 1, 'username' => 2, 'userFirstname' => 3, 'userLastname' => 4, 'password' => 5, 'salt' => 6, 'phoneNumber' => 7, 'supervisorQuota1' => 8, 'roleId' => 9, 'status' => 10, 'projectYear' => 11, 'department' => 12, 'createdBy' => 13, 'createdOn' => 14, 'modifiedBy' => 15, 'modifiedOn' => 16, 'supervisorQuota2' => 17, 'quotaUsed1' => 18, 'quotaUsed2' => 19, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USER_EMAIL => 1, UserPeer::USERNAME => 2, UserPeer::USER_FIRSTNAME => 3, UserPeer::USER_LASTNAME => 4, UserPeer::PASSWORD => 5, UserPeer::SALT => 6, UserPeer::PHONE_NUMBER => 7, UserPeer::SUPERVISOR_QUOTA_1 => 8, UserPeer::ROLE_ID => 9, UserPeer::STATUS => 10, UserPeer::PROJECT_YEAR => 11, UserPeer::DEPARTMENT => 12, UserPeer::CREATED_BY => 13, UserPeer::CREATED_ON => 14, UserPeer::MODIFIED_BY => 15, UserPeer::MODIFIED_ON => 16, UserPeer::SUPERVISOR_QUOTA_2 => 17, UserPeer::QUOTA_USED_1 => 18, UserPeer::QUOTA_USED_2 => 19, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_EMAIL' => 1, 'USERNAME' => 2, 'USER_FIRSTNAME' => 3, 'USER_LASTNAME' => 4, 'PASSWORD' => 5, 'SALT' => 6, 'PHONE_NUMBER' => 7, 'SUPERVISOR_QUOTA_1' => 8, 'ROLE_ID' => 9, 'STATUS' => 10, 'PROJECT_YEAR' => 11, 'DEPARTMENT' => 12, 'CREATED_BY' => 13, 'CREATED_ON' => 14, 'MODIFIED_BY' => 15, 'MODIFIED_ON' => 16, 'SUPERVISOR_QUOTA_2' => 17, 'QUOTA_USED_1' => 18, 'QUOTA_USED_2' => 19, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_email' => 1, 'username' => 2, 'user_firstname' => 3, 'user_lastname' => 4, 'password' => 5, 'salt' => 6, 'phone_number' => 7, 'supervisor_quota_1' => 8, 'role_id' => 9, 'status' => 10, 'project_year' => 11, 'department' => 12, 'created_by' => 13, 'created_on' => 14, 'modified_by' => 15, 'modified_on' => 16, 'supervisor_quota_2' => 17, 'quota_used_1' => 18, 'quota_used_2' => 19, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -217,6 +220,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::USER_LASTNAME);
             $criteria->addSelectColumn(UserPeer::PASSWORD);
             $criteria->addSelectColumn(UserPeer::SALT);
+            $criteria->addSelectColumn(UserPeer::PHONE_NUMBER);
             $criteria->addSelectColumn(UserPeer::SUPERVISOR_QUOTA_1);
             $criteria->addSelectColumn(UserPeer::ROLE_ID);
             $criteria->addSelectColumn(UserPeer::STATUS);
@@ -237,6 +241,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.USER_LASTNAME');
             $criteria->addSelectColumn($alias . '.PASSWORD');
             $criteria->addSelectColumn($alias . '.SALT');
+            $criteria->addSelectColumn($alias . '.PHONE_NUMBER');
             $criteria->addSelectColumn($alias . '.SUPERVISOR_QUOTA_1');
             $criteria->addSelectColumn($alias . '.ROLE_ID');
             $criteria->addSelectColumn($alias . '.STATUS');

@@ -18,6 +18,7 @@ CREATE TABLE `User`
     `user_lastname` VARCHAR(100) NOT NULL,
     `password` VARCHAR(128) NOT NULL,
     `salt` INTEGER NOT NULL,
+    `phone_number` INTEGER NOT NULL,
     `supervisor_quota_1` INTEGER DEFAULT 0,
     `role_id` INTEGER,
     `status` VARCHAR(50) NOT NULL,
@@ -48,8 +49,8 @@ DROP TABLE IF EXISTS `Role`;
 CREATE TABLE `Role`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `status` VARCHAR(50) NOT NULL,
     `description` VARCHAR(50) NOT NULL,
+    `status` VARCHAR(50) NOT NULL,
     `valid_from` DATETIME,
     `valid_until` DATETIME,
     `created_by` INTEGER,
@@ -242,6 +243,23 @@ CREATE TABLE `Register`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
+
+-- ---------------------------------------------------------------------
+-- AppStatus
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `AppStatus`;
+
+CREATE TABLE `AppStatus`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `active_from` DATETIME,
+    `active_untill` DATETIME,
+    `modified_by` INTEGER,
+    `modified_on` DATETIME,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 

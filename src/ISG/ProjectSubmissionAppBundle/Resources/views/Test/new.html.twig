@@ -3,7 +3,7 @@
 {% block content %}
 <p>Welcome to this register</p>
 
-<form action="{{ path('_mainIndex') }}" method="post" {{ form_enctype(form) }}
+<form action="{{ path('_userNew') }}" method="post" {{ form_enctype(form) }}
  {{ form_widget(form) }}
  <input type="submit" />
 </form> 

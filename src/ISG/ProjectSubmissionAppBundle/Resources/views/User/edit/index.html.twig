@@ -6,14 +6,14 @@
 
  <div class="header-lg"> <h3>Project Submission - Create User</h3></div>
 
-  {{ form_errors(form) }}
-  <div class="form-lg">
-   <form action="{{ path('_userNew') }}" method="post" {{ form_enctype(form) }}
+   {{ form_errors(form) }}
+   <div class="form-lg">
+   <form action="{{ path('_userEdit', {'id': id}) }}" method="post" {{ form_enctype(form) }}
      {{ form_widget(form) }}
      <input type="submit" />
    </form> 
    
-  </div>
+   </div>
 </div>
 
 

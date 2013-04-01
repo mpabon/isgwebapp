@@ -11,7 +11,8 @@
         <column name="user_firstname" type="varchar" primaryString="true" required="true" size="100" />
         <column name="user_lastname" type="varchar" primaryString="true" required="true" size="100" />
         <column name="password" type="varchar" primaryString="true" required="true" size="128" />
-        <column name="salt" type="integer" required="true" />        
+        <column name="salt" type="integer" required="true" />
+        <column name="phone_number" type="integer" required="true" defaultValue="NULL" />        
         <column name="supervisor_quota_1" type="integer"  required="false" defaultValue="0" />
         <column name="role_id" type="integer" />
         <column name="status" type="varchar" primaryString="true" required="true" size="50" />
@@ -34,8 +35,8 @@
           <parameter name="Charset" value="utf8" />
         </vendor>
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="status" type="varchar" primaryString="true" required="true" size="50"/>
         <column name="description" type="varchar" primaryString="true" required="true" size="50"/>
+        <column name="status" type="varchar" primaryString="true" required="true" size="50"/>
         <column name="valid_from" type="timestamp" />
         <column name="valid_until" type="timestamp" />
         <column name="created_by" type="integer" required="false" />
@@ -180,5 +181,17 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="name" type="varchar" size="100"  required="true"/>
         <column name="updated_at" type="timestamp" />
+    </table>
+    <table name="AppStatus">
+        <vendor type="mysql">
+          <parameter name="Engine" value="InnoDB" />
+          <parameter name="Charset" value="utf8" />
+        </vendor>
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="100"  required="true"/>
+        <column name="active_from" type="timestamp" />
+	<column name="active_untill" type="timestamp" />
+	<column name="modified_by" type="integer" defaultValue="NULL" />
+        <column name="modified_on" type="timestamp" defaultValue="NULL" /> 
     </table>
 </database>

@@ -95,6 +95,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $salt;
 
     /**
+     * The value for the phone_number field.
+     * @var        int
+     */
+    protected $phone_number;
+
+    /**
      * The value for the supervisor_quota_1 field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -353,6 +359,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * Get the [phone_number] column value.
+     *
+     * @return int
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phone_number;
     }
 
     /**
@@ -677,6 +693,27 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setSalt()
 
     /**
+     * Set the value of [phone_number] column.
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setPhoneNumber($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->phone_number !== $v) {
+            $this->phone_number = $v;
+            $this->modifiedColumns[] = UserPeer::PHONE_NUMBER;
+        }
+
+
+        return $this;
+    } // setPhoneNumber()
+
+    /**
      * Set the value of [supervisor_quota_1] column.
      *
      * @param int $v new value
@@ -991,18 +1028,19 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->user_lastname = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->password = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->salt = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->supervisor_quota_1 = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->role_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->status = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->project_year = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->department = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->created_by = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->created_on = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->modified_by = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->modified_on = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->supervisor_quota_2 = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-            $this->quota_used_1 = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
-            $this->quota_used_2 = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+            $this->phone_number = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->supervisor_quota_1 = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->role_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->status = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->project_year = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->department = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->created_by = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->created_on = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->modified_by = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->modified_on = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->supervisor_quota_2 = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+            $this->quota_used_1 = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+            $this->quota_used_2 = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1011,7 +1049,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 19; // 19 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -1374,6 +1412,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::SALT)) {
             $modifiedColumns[':p' . $index++]  = '`SALT`';
         }
+        if ($this->isColumnModified(UserPeer::PHONE_NUMBER)) {
+            $modifiedColumns[':p' . $index++]  = '`PHONE_NUMBER`';
+        }
         if ($this->isColumnModified(UserPeer::SUPERVISOR_QUOTA_1)) {
             $modifiedColumns[':p' . $index++]  = '`SUPERVISOR_QUOTA_1`';
         }
@@ -1441,6 +1482,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`SALT`':
                         $stmt->bindValue($identifier, $this->salt, PDO::PARAM_INT);
+                        break;
+                    case '`PHONE_NUMBER`':
+                        $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_INT);
                         break;
                     case '`SUPERVISOR_QUOTA_1`':
                         $stmt->bindValue($identifier, $this->supervisor_quota_1, PDO::PARAM_INT);
@@ -1694,39 +1738,42 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getSalt();
                 break;
             case 7:
-                return $this->getSupervisorQuota1();
+                return $this->getPhoneNumber();
                 break;
             case 8:
-                return $this->getRoleId();
+                return $this->getSupervisorQuota1();
                 break;
             case 9:
-                return $this->getStatus();
+                return $this->getRoleId();
                 break;
             case 10:
-                return $this->getProjectYear();
+                return $this->getStatus();
                 break;
             case 11:
-                return $this->getDepartment();
+                return $this->getProjectYear();
                 break;
             case 12:
-                return $this->getCreatedBy();
+                return $this->getDepartment();
                 break;
             case 13:
-                return $this->getCreatedOn();
+                return $this->getCreatedBy();
                 break;
             case 14:
-                return $this->getModifiedBy();
+                return $this->getCreatedOn();
                 break;
             case 15:
-                return $this->getModifiedOn();
+                return $this->getModifiedBy();
                 break;
             case 16:
-                return $this->getSupervisorQuota2();
+                return $this->getModifiedOn();
                 break;
             case 17:
-                return $this->getQuotaUsed1();
+                return $this->getSupervisorQuota2();
                 break;
             case 18:
+                return $this->getQuotaUsed1();
+                break;
+            case 19:
                 return $this->getQuotaUsed2();
                 break;
             default:
@@ -1765,18 +1812,19 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[4] => $this->getUserLastname(),
             $keys[5] => $this->getPassword(),
             $keys[6] => $this->getSalt(),
-            $keys[7] => $this->getSupervisorQuota1(),
-            $keys[8] => $this->getRoleId(),
-            $keys[9] => $this->getStatus(),
-            $keys[10] => $this->getProjectYear(),
-            $keys[11] => $this->getDepartment(),
-            $keys[12] => $this->getCreatedBy(),
-            $keys[13] => $this->getCreatedOn(),
-            $keys[14] => $this->getModifiedBy(),
-            $keys[15] => $this->getModifiedOn(),
-            $keys[16] => $this->getSupervisorQuota2(),
-            $keys[17] => $this->getQuotaUsed1(),
-            $keys[18] => $this->getQuotaUsed2(),
+            $keys[7] => $this->getPhoneNumber(),
+            $keys[8] => $this->getSupervisorQuota1(),
+            $keys[9] => $this->getRoleId(),
+            $keys[10] => $this->getStatus(),
+            $keys[11] => $this->getProjectYear(),
+            $keys[12] => $this->getDepartment(),
+            $keys[13] => $this->getCreatedBy(),
+            $keys[14] => $this->getCreatedOn(),
+            $keys[15] => $this->getModifiedBy(),
+            $keys[16] => $this->getModifiedOn(),
+            $keys[17] => $this->getSupervisorQuota2(),
+            $keys[18] => $this->getQuotaUsed1(),
+            $keys[19] => $this->getQuotaUsed2(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aRole) {
@@ -1856,39 +1904,42 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setSalt($value);
                 break;
             case 7:
-                $this->setSupervisorQuota1($value);
+                $this->setPhoneNumber($value);
                 break;
             case 8:
-                $this->setRoleId($value);
+                $this->setSupervisorQuota1($value);
                 break;
             case 9:
-                $this->setStatus($value);
+                $this->setRoleId($value);
                 break;
             case 10:
-                $this->setProjectYear($value);
+                $this->setStatus($value);
                 break;
             case 11:
-                $this->setDepartment($value);
+                $this->setProjectYear($value);
                 break;
             case 12:
-                $this->setCreatedBy($value);
+                $this->setDepartment($value);
                 break;
             case 13:
-                $this->setCreatedOn($value);
+                $this->setCreatedBy($value);
                 break;
             case 14:
-                $this->setModifiedBy($value);
+                $this->setCreatedOn($value);
                 break;
             case 15:
-                $this->setModifiedOn($value);
+                $this->setModifiedBy($value);
                 break;
             case 16:
-                $this->setSupervisorQuota2($value);
+                $this->setModifiedOn($value);
                 break;
             case 17:
-                $this->setQuotaUsed1($value);
+                $this->setSupervisorQuota2($value);
                 break;
             case 18:
+                $this->setQuotaUsed1($value);
+                break;
+            case 19:
                 $this->setQuotaUsed2($value);
                 break;
         } // switch()
@@ -1922,18 +1973,19 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setUserLastname($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setPassword($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setSalt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSupervisorQuota1($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setRoleId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setStatus($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setProjectYear($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setDepartment($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setCreatedBy($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedOn($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setModifiedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setModifiedOn($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setSupervisorQuota2($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setQuotaUsed1($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setQuotaUsed2($arr[$keys[18]]);
+        if (array_key_exists($keys[7], $arr)) $this->setPhoneNumber($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSupervisorQuota1($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setRoleId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setStatus($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setProjectYear($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setDepartment($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedOn($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setModifiedBy($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setModifiedOn($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setSupervisorQuota2($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setQuotaUsed1($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setQuotaUsed2($arr[$keys[19]]);
     }
 
     /**
@@ -1952,6 +2004,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::USER_LASTNAME)) $criteria->add(UserPeer::USER_LASTNAME, $this->user_lastname);
         if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
         if ($this->isColumnModified(UserPeer::SALT)) $criteria->add(UserPeer::SALT, $this->salt);
+        if ($this->isColumnModified(UserPeer::PHONE_NUMBER)) $criteria->add(UserPeer::PHONE_NUMBER, $this->phone_number);
         if ($this->isColumnModified(UserPeer::SUPERVISOR_QUOTA_1)) $criteria->add(UserPeer::SUPERVISOR_QUOTA_1, $this->supervisor_quota_1);
         if ($this->isColumnModified(UserPeer::ROLE_ID)) $criteria->add(UserPeer::ROLE_ID, $this->role_id);
         if ($this->isColumnModified(UserPeer::STATUS)) $criteria->add(UserPeer::STATUS, $this->status);
@@ -2040,6 +2093,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setUserLastname($this->getUserLastname());
         $copyObj->setPassword($this->getPassword());
         $copyObj->setSalt($this->getSalt());
+        $copyObj->setPhoneNumber($this->getPhoneNumber());
         $copyObj->setSupervisorQuota1($this->getSupervisorQuota1());
         $copyObj->setRoleId($this->getRoleId());
         $copyObj->setStatus($this->getStatus());
@@ -3607,6 +3661,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->user_lastname = null;
         $this->password = null;
         $this->salt = null;
+        $this->phone_number = null;
         $this->supervisor_quota_1 = null;
         $this->role_id = null;
         $this->status = null;

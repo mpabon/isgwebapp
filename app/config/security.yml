@@ -23,7 +23,7 @@ security:
             security: false
 
         login:
-            pattern:  ^/demo/secured/login$
+            pattern:  ^/user/login$
             security: false
 
         secured_area:

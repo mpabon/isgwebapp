@@ -30,6 +30,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  * @method UserQuery orderByUserLastname($order = Criteria::ASC) Order by the user_lastname column
  * @method UserQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method UserQuery orderBySalt($order = Criteria::ASC) Order by the salt column
+ * @method UserQuery orderByPhoneNumber($order = Criteria::ASC) Order by the phone_number column
  * @method UserQuery orderBySupervisorQuota1($order = Criteria::ASC) Order by the supervisor_quota_1 column
  * @method UserQuery orderByRoleId($order = Criteria::ASC) Order by the role_id column
  * @method UserQuery orderByStatus($order = Criteria::ASC) Order by the status column
@@ -50,6 +51,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  * @method UserQuery groupByUserLastname() Group by the user_lastname column
  * @method UserQuery groupByPassword() Group by the password column
  * @method UserQuery groupBySalt() Group by the salt column
+ * @method UserQuery groupByPhoneNumber() Group by the phone_number column
  * @method UserQuery groupBySupervisorQuota1() Group by the supervisor_quota_1 column
  * @method UserQuery groupByRoleId() Group by the role_id column
  * @method UserQuery groupByStatus() Group by the status column
@@ -105,6 +107,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  * @method User findOneByUserLastname(string $user_lastname) Return the first User filtered by the user_lastname column
  * @method User findOneByPassword(string $password) Return the first User filtered by the password column
  * @method User findOneBySalt(int $salt) Return the first User filtered by the salt column
+ * @method User findOneByPhoneNumber(int $phone_number) Return the first User filtered by the phone_number column
  * @method User findOneBySupervisorQuota1(int $supervisor_quota_1) Return the first User filtered by the supervisor_quota_1 column
  * @method User findOneByRoleId(int $role_id) Return the first User filtered by the role_id column
  * @method User findOneByStatus(string $status) Return the first User filtered by the status column
@@ -125,6 +128,7 @@ use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
  * @method array findByUserLastname(string $user_lastname) Return User objects filtered by the user_lastname column
  * @method array findByPassword(string $password) Return User objects filtered by the password column
  * @method array findBySalt(int $salt) Return User objects filtered by the salt column
+ * @method array findByPhoneNumber(int $phone_number) Return User objects filtered by the phone_number column
  * @method array findBySupervisorQuota1(int $supervisor_quota_1) Return User objects filtered by the supervisor_quota_1 column
  * @method array findByRoleId(int $role_id) Return User objects filtered by the role_id column
  * @method array findByStatus(string $status) Return User objects filtered by the status column
@@ -225,7 +229,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_EMAIL`, `USERNAME`, `USER_FIRSTNAME`, `USER_LASTNAME`, `PASSWORD`, `SALT`, `SUPERVISOR_QUOTA_1`, `ROLE_ID`, `STATUS`, `PROJECT_YEAR`, `DEPARTMENT`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON`, `SUPERVISOR_QUOTA_2`, `QUOTA_USED_1`, `QUOTA_USED_2` FROM `User` WHERE `ID` = :p0 AND `USER_EMAIL` = :p1';
+        $sql = 'SELECT `ID`, `USER_EMAIL`, `USERNAME`, `USER_FIRSTNAME`, `USER_LASTNAME`, `PASSWORD`, `SALT`, `PHONE_NUMBER`, `SUPERVISOR_QUOTA_1`, `ROLE_ID`, `STATUS`, `PROJECT_YEAR`, `DEPARTMENT`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON`, `SUPERVISOR_QUOTA_2`, `QUOTA_USED_1`, `QUOTA_USED_2` FROM `User` WHERE `ID` = :p0 AND `USER_EMAIL` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -537,6 +541,47 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::SALT, $salt, $comparison);
+    }
+
+    /**
+     * Filter the query on the phone_number column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPhoneNumber(1234); // WHERE phone_number = 1234
+     * $query->filterByPhoneNumber(array(12, 34)); // WHERE phone_number IN (12, 34)
+     * $query->filterByPhoneNumber(array('min' => 12)); // WHERE phone_number > 12
+     * </code>
+     *
+     * @param     mixed $phoneNumber The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByPhoneNumber($phoneNumber = null, $comparison = null)
+    {
+        if (is_array($phoneNumber)) {
+            $useMinMax = false;
+            if (isset($phoneNumber['min'])) {
+                $this->addUsingAlias(UserPeer::PHONE_NUMBER, $phoneNumber['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($phoneNumber['max'])) {
+                $this->addUsingAlias(UserPeer::PHONE_NUMBER, $phoneNumber['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::PHONE_NUMBER, $phoneNumber, $comparison);
     }
 
     /**

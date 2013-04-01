@@ -54,6 +54,7 @@ class UserTableMap extends TableMap
         $this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 128, null);
         $this->getColumn('PASSWORD', false)->setPrimaryString(true);
         $this->addColumn('SALT', 'Salt', 'INTEGER', true, null, null);
+        $this->addColumn('PHONE_NUMBER', 'PhoneNumber', 'INTEGER', true, null, null);
         $this->addColumn('SUPERVISOR_QUOTA_1', 'SupervisorQuota1', 'INTEGER', false, null, 0);
         $this->addForeignKey('ROLE_ID', 'RoleId', 'INTEGER', 'Role', 'ID', false, null, null);
         $this->addColumn('STATUS', 'Status', 'VARCHAR', true, 50, null);

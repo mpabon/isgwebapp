@@ -10,29 +10,25 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
-use \PropelObjectCollection;
 use \PropelPDO;
-use ISG\ProjectSubmissionAppBundle\Model\Role;
-use ISG\ProjectSubmissionAppBundle\Model\RolePeer;
-use ISG\ProjectSubmissionAppBundle\Model\RoleQuery;
-use ISG\ProjectSubmissionAppBundle\Model\User;
-use ISG\ProjectSubmissionAppBundle\Model\UserQuery;
+use ISG\ProjectSubmissionAppBundle\Model\Appstatus;
+use ISG\ProjectSubmissionAppBundle\Model\AppstatusPeer;
+use ISG\ProjectSubmissionAppBundle\Model\AppstatusQuery;
 
-abstract class BaseRole extends BaseObject implements Persistent
+abstract class BaseAppstatus extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'ISG\\ProjectSubmissionAppBundle\\Model\\RolePeer';
+    const PEER = 'ISG\\ProjectSubmissionAppBundle\\Model\\AppstatusPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        RolePeer
+     * @var        AppstatusPeer
      */
     protected static $peer;
 
@@ -49,40 +45,22 @@ abstract class BaseRole extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the description field.
+     * The value for the name field.
      * @var        string
      */
-    protected $description;
+    protected $name;
 
     /**
-     * The value for the status field.
+     * The value for the active_from field.
      * @var        string
      */
-    protected $status;
+    protected $active_from;
 
     /**
-     * The value for the valid_from field.
+     * The value for the active_untill field.
      * @var        string
      */
-    protected $valid_from;
-
-    /**
-     * The value for the valid_until field.
-     * @var        string
-     */
-    protected $valid_until;
-
-    /**
-     * The value for the created_by field.
-     * @var        int
-     */
-    protected $created_by;
-
-    /**
-     * The value for the created_on field.
-     * @var        string
-     */
-    protected $created_on;
+    protected $active_untill;
 
     /**
      * The value for the modified_by field.
@@ -95,12 +73,6 @@ abstract class BaseRole extends BaseObject implements Persistent
      * @var        string
      */
     protected $modified_on;
-
-    /**
-     * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
-     */
-    protected $collUsers;
-    protected $collUsersPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -117,12 +89,6 @@ abstract class BaseRole extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $usersScheduledForDeletion = null;
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -133,27 +99,17 @@ abstract class BaseRole extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [name] column value.
      *
      * @return string
      */
-    public function getDescription()
+    public function getName()
     {
-        return $this->description;
+        return $this->name;
     }
 
     /**
-     * Get the [status] column value.
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [valid_from] column value.
+     * Get the [optionally formatted] temporal [active_from] column value.
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
@@ -161,21 +117,21 @@ abstract class BaseRole extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getValidFrom($format = null)
+    public function getActiveFrom($format = null)
     {
-        if ($this->valid_from === null) {
+        if ($this->active_from === null) {
             return null;
         }
 
-        if ($this->valid_from === '0000-00-00 00:00:00') {
+        if ($this->active_from === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
             try {
-                $dt = new DateTime($this->valid_from);
+                $dt = new DateTime($this->active_from);
             } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->valid_from, true), $x);
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->active_from, true), $x);
             }
         }
 
@@ -190,7 +146,7 @@ abstract class BaseRole extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [valid_until] column value.
+     * Get the [optionally formatted] temporal [active_untill] column value.
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
@@ -198,68 +154,21 @@ abstract class BaseRole extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getValidUntil($format = null)
+    public function getActiveUntill($format = null)
     {
-        if ($this->valid_until === null) {
+        if ($this->active_untill === null) {
             return null;
         }
 
-        if ($this->valid_until === '0000-00-00 00:00:00') {
+        if ($this->active_untill === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
             try {
-                $dt = new DateTime($this->valid_until);
+                $dt = new DateTime($this->active_untill);
             } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->valid_until, true), $x);
-            }
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
-        }
-    }
-
-    /**
-     * Get the [created_by] column value.
-     *
-     * @return int
-     */
-    public function getCreatedBy()
-    {
-        return $this->created_by;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [created_on] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedOn($format = null)
-    {
-        if ($this->created_on === null) {
-            return null;
-        }
-
-        if ($this->created_on === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        } else {
-            try {
-                $dt = new DateTime($this->created_on);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_on, true), $x);
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->active_untill, true), $x);
             }
         }
 
@@ -324,7 +233,7 @@ abstract class BaseRole extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -334,7 +243,7 @@ abstract class BaseRole extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = RolePeer::ID;
+            $this->modifiedColumns[] = AppstatusPeer::ID;
         }
 
 
@@ -342,142 +251,77 @@ abstract class BaseRole extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [name] column.
      *
      * @param string $v new value
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[] = RolePeer::DESCRIPTION;
+        if ($this->name !== $v) {
+            $this->name = $v;
+            $this->modifiedColumns[] = AppstatusPeer::NAME;
         }
 
 
         return $this;
-    } // setDescription()
+    } // setName()
 
     /**
-     * Set the value of [status] column.
-     *
-     * @param string $v new value
-     * @return Role The current object (for fluent API support)
-     */
-    public function setStatus($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->status !== $v) {
-            $this->status = $v;
-            $this->modifiedColumns[] = RolePeer::STATUS;
-        }
-
-
-        return $this;
-    } // setStatus()
-
-    /**
-     * Sets the value of [valid_from] column to a normalized version of the date/time value specified.
+     * Sets the value of [active_from] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
-    public function setValidFrom($v)
+    public function setActiveFrom($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->valid_from !== null || $dt !== null) {
-            $currentDateAsString = ($this->valid_from !== null && $tmpDt = new DateTime($this->valid_from)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+        if ($this->active_from !== null || $dt !== null) {
+            $currentDateAsString = ($this->active_from !== null && $tmpDt = new DateTime($this->active_from)) ? $tmpDt->format('Y-m-d H:i:s') : null;
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
-                $this->valid_from = $newDateAsString;
-                $this->modifiedColumns[] = RolePeer::VALID_FROM;
+                $this->active_from = $newDateAsString;
+                $this->modifiedColumns[] = AppstatusPeer::ACTIVE_FROM;
             }
         } // if either are not null
 
 
         return $this;
-    } // setValidFrom()
+    } // setActiveFrom()
 
     /**
-     * Sets the value of [valid_until] column to a normalized version of the date/time value specified.
+     * Sets the value of [active_untill] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
-    public function setValidUntil($v)
+    public function setActiveUntill($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->valid_until !== null || $dt !== null) {
-            $currentDateAsString = ($this->valid_until !== null && $tmpDt = new DateTime($this->valid_until)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+        if ($this->active_untill !== null || $dt !== null) {
+            $currentDateAsString = ($this->active_untill !== null && $tmpDt = new DateTime($this->active_untill)) ? $tmpDt->format('Y-m-d H:i:s') : null;
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
-                $this->valid_until = $newDateAsString;
-                $this->modifiedColumns[] = RolePeer::VALID_UNTIL;
+                $this->active_untill = $newDateAsString;
+                $this->modifiedColumns[] = AppstatusPeer::ACTIVE_UNTILL;
             }
         } // if either are not null
 
 
         return $this;
-    } // setValidUntil()
-
-    /**
-     * Set the value of [created_by] column.
-     *
-     * @param int $v new value
-     * @return Role The current object (for fluent API support)
-     */
-    public function setCreatedBy($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->created_by !== $v) {
-            $this->created_by = $v;
-            $this->modifiedColumns[] = RolePeer::CREATED_BY;
-        }
-
-
-        return $this;
-    } // setCreatedBy()
-
-    /**
-     * Sets the value of [created_on] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Role The current object (for fluent API support)
-     */
-    public function setCreatedOn($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_on !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_on !== null && $tmpDt = new DateTime($this->created_on)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_on = $newDateAsString;
-                $this->modifiedColumns[] = RolePeer::CREATED_ON;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedOn()
+    } // setActiveUntill()
 
     /**
      * Set the value of [modified_by] column.
      *
      * @param int $v new value
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
     public function setModifiedBy($v)
     {
@@ -487,7 +331,7 @@ abstract class BaseRole extends BaseObject implements Persistent
 
         if ($this->modified_by !== $v) {
             $this->modified_by = $v;
-            $this->modifiedColumns[] = RolePeer::MODIFIED_BY;
+            $this->modifiedColumns[] = AppstatusPeer::MODIFIED_BY;
         }
 
 
@@ -499,7 +343,7 @@ abstract class BaseRole extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return Role The current object (for fluent API support)
+     * @return Appstatus The current object (for fluent API support)
      */
     public function setModifiedOn($v)
     {
@@ -509,7 +353,7 @@ abstract class BaseRole extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->modified_on = $newDateAsString;
-                $this->modifiedColumns[] = RolePeer::MODIFIED_ON;
+                $this->modifiedColumns[] = AppstatusPeer::MODIFIED_ON;
             }
         } // if either are not null
 
@@ -550,14 +394,11 @@ abstract class BaseRole extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->description = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->status = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->valid_from = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->valid_until = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->created_by = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->created_on = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->modified_by = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->modified_on = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->active_from = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->active_untill = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->modified_by = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->modified_on = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -566,10 +407,10 @@ abstract class BaseRole extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = RolePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = AppstatusPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Role object", $e);
+            throw new PropelException("Error populating Appstatus object", $e);
         }
     }
 
@@ -612,13 +453,13 @@ abstract class BaseRole extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = RolePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = AppstatusPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -627,8 +468,6 @@ abstract class BaseRole extends BaseObject implements Persistent
         $this->hydrate($row, 0, true); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->collUsers = null;
 
         } // if (deep)
     }
@@ -650,12 +489,12 @@ abstract class BaseRole extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = RoleQuery::create()
+            $deleteQuery = AppstatusQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -693,7 +532,7 @@ abstract class BaseRole extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(RolePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(AppstatusPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -713,7 +552,7 @@ abstract class BaseRole extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                RolePeer::addInstanceToPool($this);
+                AppstatusPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -754,24 +593,6 @@ abstract class BaseRole extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->usersScheduledForDeletion !== null) {
-                if (!$this->usersScheduledForDeletion->isEmpty()) {
-                    foreach ($this->usersScheduledForDeletion as $user) {
-                        // need to save related object because we set the relation to null
-                        $user->save($con);
-                    }
-                    $this->usersScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collUsers !== null) {
-                foreach ($this->collUsers as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -792,42 +613,33 @@ abstract class BaseRole extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = RolePeer::ID;
+        $this->modifiedColumns[] = AppstatusPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . RolePeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . AppstatusPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(RolePeer::ID)) {
+        if ($this->isColumnModified(AppstatusPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(RolePeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
+        if ($this->isColumnModified(AppstatusPeer::NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
-        if ($this->isColumnModified(RolePeer::STATUS)) {
-            $modifiedColumns[':p' . $index++]  = '`STATUS`';
+        if ($this->isColumnModified(AppstatusPeer::ACTIVE_FROM)) {
+            $modifiedColumns[':p' . $index++]  = '`ACTIVE_FROM`';
         }
-        if ($this->isColumnModified(RolePeer::VALID_FROM)) {
-            $modifiedColumns[':p' . $index++]  = '`VALID_FROM`';
+        if ($this->isColumnModified(AppstatusPeer::ACTIVE_UNTILL)) {
+            $modifiedColumns[':p' . $index++]  = '`ACTIVE_UNTILL`';
         }
-        if ($this->isColumnModified(RolePeer::VALID_UNTIL)) {
-            $modifiedColumns[':p' . $index++]  = '`VALID_UNTIL`';
-        }
-        if ($this->isColumnModified(RolePeer::CREATED_BY)) {
-            $modifiedColumns[':p' . $index++]  = '`CREATED_BY`';
-        }
-        if ($this->isColumnModified(RolePeer::CREATED_ON)) {
-            $modifiedColumns[':p' . $index++]  = '`CREATED_ON`';
-        }
-        if ($this->isColumnModified(RolePeer::MODIFIED_BY)) {
+        if ($this->isColumnModified(AppstatusPeer::MODIFIED_BY)) {
             $modifiedColumns[':p' . $index++]  = '`MODIFIED_BY`';
         }
-        if ($this->isColumnModified(RolePeer::MODIFIED_ON)) {
+        if ($this->isColumnModified(AppstatusPeer::MODIFIED_ON)) {
             $modifiedColumns[':p' . $index++]  = '`MODIFIED_ON`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `Role` (%s) VALUES (%s)',
+            'INSERT INTO `AppStatus` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -839,23 +651,14 @@ abstract class BaseRole extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`DESCRIPTION`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case '`NAME`':
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`STATUS`':
-                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
+                    case '`ACTIVE_FROM`':
+                        $stmt->bindValue($identifier, $this->active_from, PDO::PARAM_STR);
                         break;
-                    case '`VALID_FROM`':
-                        $stmt->bindValue($identifier, $this->valid_from, PDO::PARAM_STR);
-                        break;
-                    case '`VALID_UNTIL`':
-                        $stmt->bindValue($identifier, $this->valid_until, PDO::PARAM_STR);
-                        break;
-                    case '`CREATED_BY`':
-                        $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
-                        break;
-                    case '`CREATED_ON`':
-                        $stmt->bindValue($identifier, $this->created_on, PDO::PARAM_STR);
+                    case '`ACTIVE_UNTILL`':
+                        $stmt->bindValue($identifier, $this->active_untill, PDO::PARAM_STR);
                         break;
                     case '`MODIFIED_BY`':
                         $stmt->bindValue($identifier, $this->modified_by, PDO::PARAM_INT);
@@ -957,18 +760,10 @@ abstract class BaseRole extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = RolePeer::doValidate($this, $columns)) !== true) {
+            if (($retval = AppstatusPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collUsers !== null) {
-                    foreach ($this->collUsers as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
 
             $this->alreadyInValidation = false;
@@ -989,7 +784,7 @@ abstract class BaseRole extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = RolePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = AppstatusPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1009,27 +804,18 @@ abstract class BaseRole extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getDescription();
+                return $this->getName();
                 break;
             case 2:
-                return $this->getStatus();
+                return $this->getActiveFrom();
                 break;
             case 3:
-                return $this->getValidFrom();
+                return $this->getActiveUntill();
                 break;
             case 4:
-                return $this->getValidUntil();
-                break;
-            case 5:
-                return $this->getCreatedBy();
-                break;
-            case 6:
-                return $this->getCreatedOn();
-                break;
-            case 7:
                 return $this->getModifiedBy();
                 break;
-            case 8:
+            case 5:
                 return $this->getModifiedOn();
                 break;
             default:
@@ -1049,33 +835,24 @@ abstract class BaseRole extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['Role'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Appstatus'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Role'][$this->getPrimaryKey()] = true;
-        $keys = RolePeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Appstatus'][$this->getPrimaryKey()] = true;
+        $keys = AppstatusPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getDescription(),
-            $keys[2] => $this->getStatus(),
-            $keys[3] => $this->getValidFrom(),
-            $keys[4] => $this->getValidUntil(),
-            $keys[5] => $this->getCreatedBy(),
-            $keys[6] => $this->getCreatedOn(),
-            $keys[7] => $this->getModifiedBy(),
-            $keys[8] => $this->getModifiedOn(),
+            $keys[1] => $this->getName(),
+            $keys[2] => $this->getActiveFrom(),
+            $keys[3] => $this->getActiveUntill(),
+            $keys[4] => $this->getModifiedBy(),
+            $keys[5] => $this->getModifiedOn(),
         );
-        if ($includeForeignObjects) {
-            if (null !== $this->collUsers) {
-                $result['Users'] = $this->collUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1093,7 +870,7 @@ abstract class BaseRole extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = RolePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = AppstatusPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1113,27 +890,18 @@ abstract class BaseRole extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setDescription($value);
+                $this->setName($value);
                 break;
             case 2:
-                $this->setStatus($value);
+                $this->setActiveFrom($value);
                 break;
             case 3:
-                $this->setValidFrom($value);
+                $this->setActiveUntill($value);
                 break;
             case 4:
-                $this->setValidUntil($value);
-                break;
-            case 5:
-                $this->setCreatedBy($value);
-                break;
-            case 6:
-                $this->setCreatedOn($value);
-                break;
-            case 7:
                 $this->setModifiedBy($value);
                 break;
-            case 8:
+            case 5:
                 $this->setModifiedOn($value);
                 break;
         } // switch()
@@ -1158,17 +926,14 @@ abstract class BaseRole extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = RolePeer::getFieldNames($keyType);
+        $keys = AppstatusPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setDescription($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setStatus($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setValidFrom($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setValidUntil($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedBy($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedOn($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setModifiedBy($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setModifiedOn($arr[$keys[8]]);
+        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setActiveFrom($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setActiveUntill($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setModifiedBy($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setModifiedOn($arr[$keys[5]]);
     }
 
     /**
@@ -1178,17 +943,14 @@ abstract class BaseRole extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(RolePeer::DATABASE_NAME);
+        $criteria = new Criteria(AppstatusPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(RolePeer::ID)) $criteria->add(RolePeer::ID, $this->id);
-        if ($this->isColumnModified(RolePeer::DESCRIPTION)) $criteria->add(RolePeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(RolePeer::STATUS)) $criteria->add(RolePeer::STATUS, $this->status);
-        if ($this->isColumnModified(RolePeer::VALID_FROM)) $criteria->add(RolePeer::VALID_FROM, $this->valid_from);
-        if ($this->isColumnModified(RolePeer::VALID_UNTIL)) $criteria->add(RolePeer::VALID_UNTIL, $this->valid_until);
-        if ($this->isColumnModified(RolePeer::CREATED_BY)) $criteria->add(RolePeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(RolePeer::CREATED_ON)) $criteria->add(RolePeer::CREATED_ON, $this->created_on);
-        if ($this->isColumnModified(RolePeer::MODIFIED_BY)) $criteria->add(RolePeer::MODIFIED_BY, $this->modified_by);
-        if ($this->isColumnModified(RolePeer::MODIFIED_ON)) $criteria->add(RolePeer::MODIFIED_ON, $this->modified_on);
+        if ($this->isColumnModified(AppstatusPeer::ID)) $criteria->add(AppstatusPeer::ID, $this->id);
+        if ($this->isColumnModified(AppstatusPeer::NAME)) $criteria->add(AppstatusPeer::NAME, $this->name);
+        if ($this->isColumnModified(AppstatusPeer::ACTIVE_FROM)) $criteria->add(AppstatusPeer::ACTIVE_FROM, $this->active_from);
+        if ($this->isColumnModified(AppstatusPeer::ACTIVE_UNTILL)) $criteria->add(AppstatusPeer::ACTIVE_UNTILL, $this->active_untill);
+        if ($this->isColumnModified(AppstatusPeer::MODIFIED_BY)) $criteria->add(AppstatusPeer::MODIFIED_BY, $this->modified_by);
+        if ($this->isColumnModified(AppstatusPeer::MODIFIED_ON)) $criteria->add(AppstatusPeer::MODIFIED_ON, $this->modified_on);
 
         return $criteria;
     }
@@ -1203,8 +965,8 @@ abstract class BaseRole extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(RolePeer::DATABASE_NAME);
-        $criteria->add(RolePeer::ID, $this->id);
+        $criteria = new Criteria(AppstatusPeer::DATABASE_NAME);
+        $criteria->add(AppstatusPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1245,39 +1007,18 @@ abstract class BaseRole extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Role (or compatible) type.
+     * @param object $copyObj An object of Appstatus (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setStatus($this->getStatus());
-        $copyObj->setValidFrom($this->getValidFrom());
-        $copyObj->setValidUntil($this->getValidUntil());
-        $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedOn($this->getCreatedOn());
+        $copyObj->setName($this->getName());
+        $copyObj->setActiveFrom($this->getActiveFrom());
+        $copyObj->setActiveUntill($this->getActiveUntill());
         $copyObj->setModifiedBy($this->getModifiedBy());
         $copyObj->setModifiedOn($this->getModifiedOn());
-
-        if ($deepCopy && !$this->startCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-            // store object hash to prevent cycle
-            $this->startCopy = true;
-
-            foreach ($this->getUsers() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUser($relObj->copy($deepCopy));
-                }
-            }
-
-            //unflag object copy
-            $this->startCopy = false;
-        } // if ($deepCopy)
-
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1293,7 +1034,7 @@ abstract class BaseRole extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Role Clone of current object.
+     * @return Appstatus Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1313,238 +1054,15 @@ abstract class BaseRole extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return RolePeer
+     * @return AppstatusPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new RolePeer();
+            self::$peer = new AppstatusPeer();
         }
 
         return self::$peer;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('User' == $relationName) {
-            $this->initUsers();
-        }
-    }
-
-    /**
-     * Clears out the collUsers collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addUsers()
-     */
-    public function clearUsers()
-    {
-        $this->collUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collUsersPartial = null;
-    }
-
-    /**
-     * reset is the collUsers collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialUsers($v = true)
-    {
-        $this->collUsersPartial = $v;
-    }
-
-    /**
-     * Initializes the collUsers collection.
-     *
-     * By default this just sets the collUsers collection to an empty array (like clearcollUsers());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initUsers($overrideExisting = true)
-    {
-        if (null !== $this->collUsers && !$overrideExisting) {
-            return;
-        }
-        $this->collUsers = new PropelObjectCollection();
-        $this->collUsers->setModel('User');
-    }
-
-    /**
-     * Gets an array of User objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Role is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|User[] List of User objects
-     * @throws PropelException
-     */
-    public function getUsers($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collUsersPartial && !$this->isNew();
-        if (null === $this->collUsers || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUsers) {
-                // return empty collection
-                $this->initUsers();
-            } else {
-                $collUsers = UserQuery::create(null, $criteria)
-                    ->filterByRole($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collUsersPartial && count($collUsers)) {
-                      $this->initUsers(false);
-
-                      foreach($collUsers as $obj) {
-                        if (false == $this->collUsers->contains($obj)) {
-                          $this->collUsers->append($obj);
-                        }
-                      }
-
-                      $this->collUsersPartial = true;
-                    }
-
-                    return $collUsers;
-                }
-
-                if($partial && $this->collUsers) {
-                    foreach($this->collUsers as $obj) {
-                        if($obj->isNew()) {
-                            $collUsers[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collUsers = $collUsers;
-                $this->collUsersPartial = false;
-            }
-        }
-
-        return $this->collUsers;
-    }
-
-    /**
-     * Sets a collection of User objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $users A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setUsers(PropelCollection $users, PropelPDO $con = null)
-    {
-        $this->usersScheduledForDeletion = $this->getUsers(new Criteria(), $con)->diff($users);
-
-        foreach ($this->usersScheduledForDeletion as $userRemoved) {
-            $userRemoved->setRole(null);
-        }
-
-        $this->collUsers = null;
-        foreach ($users as $user) {
-            $this->addUser($user);
-        }
-
-        $this->collUsers = $users;
-        $this->collUsersPartial = false;
-    }
-
-    /**
-     * Returns the number of related User objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related User objects.
-     * @throws PropelException
-     */
-    public function countUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collUsersPartial && !$this->isNew();
-        if (null === $this->collUsers || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUsers) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getUsers());
-                }
-                $query = UserQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByRole($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collUsers);
-        }
-    }
-
-    /**
-     * Method called to associate a User object to this object
-     * through the User foreign key attribute.
-     *
-     * @param    User $l User
-     * @return Role The current object (for fluent API support)
-     */
-    public function addUser(User $l)
-    {
-        if ($this->collUsers === null) {
-            $this->initUsers();
-            $this->collUsersPartial = true;
-        }
-        if (!$this->collUsers->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddUser($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	User $user The user object to add.
-     */
-    protected function doAddUser($user)
-    {
-        $this->collUsers[]= $user;
-        $user->setRole($this);
-    }
-
-    /**
-     * @param	User $user The user object to remove.
-     */
-    public function removeUser($user)
-    {
-        if ($this->getUsers()->contains($user)) {
-            $this->collUsers->remove($this->collUsers->search($user));
-            if (null === $this->usersScheduledForDeletion) {
-                $this->usersScheduledForDeletion = clone $this->collUsers;
-                $this->usersScheduledForDeletion->clear();
-            }
-            $this->usersScheduledForDeletion[]= $user;
-            $user->setRole(null);
-        }
     }
 
     /**
@@ -1553,12 +1071,9 @@ abstract class BaseRole extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->description = null;
-        $this->status = null;
-        $this->valid_from = null;
-        $this->valid_until = null;
-        $this->created_by = null;
-        $this->created_on = null;
+        $this->name = null;
+        $this->active_from = null;
+        $this->active_untill = null;
         $this->modified_by = null;
         $this->modified_on = null;
         $this->alreadyInSave = false;
@@ -1581,27 +1096,18 @@ abstract class BaseRole extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collUsers) {
-                foreach ($this->collUsers as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        if ($this->collUsers instanceof PropelCollection) {
-            $this->collUsers->clearIterator();
-        }
-        $this->collUsers = null;
     }
 
     /**
      * return the string representation of this object
      *
-     * @return string The value of the 'description' column
+     * @return string
      */
     public function __toString()
     {
-        return (string) $this->getDescription();
+        return (string) $this->exportTo(AppstatusPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

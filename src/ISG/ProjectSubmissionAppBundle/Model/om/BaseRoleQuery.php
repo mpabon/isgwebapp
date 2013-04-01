@@ -19,8 +19,8 @@ use ISG\ProjectSubmissionAppBundle\Model\User;
 
 /**
  * @method RoleQuery orderById($order = Criteria::ASC) Order by the id column
- * @method RoleQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method RoleQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method RoleQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method RoleQuery orderByValidFrom($order = Criteria::ASC) Order by the valid_from column
  * @method RoleQuery orderByValidUntil($order = Criteria::ASC) Order by the valid_until column
  * @method RoleQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
@@ -29,8 +29,8 @@ use ISG\ProjectSubmissionAppBundle\Model\User;
  * @method RoleQuery orderByModifiedOn($order = Criteria::ASC) Order by the modified_on column
  *
  * @method RoleQuery groupById() Group by the id column
- * @method RoleQuery groupByStatus() Group by the status column
  * @method RoleQuery groupByDescription() Group by the description column
+ * @method RoleQuery groupByStatus() Group by the status column
  * @method RoleQuery groupByValidFrom() Group by the valid_from column
  * @method RoleQuery groupByValidUntil() Group by the valid_until column
  * @method RoleQuery groupByCreatedBy() Group by the created_by column
@@ -50,8 +50,8 @@ use ISG\ProjectSubmissionAppBundle\Model\User;
  * @method Role findOneOrCreate(PropelPDO $con = null) Return the first Role matching the query, or a new Role object populated from the query conditions when no match is found
  *
  * @method Role findOneById(int $id) Return the first Role filtered by the id column
- * @method Role findOneByStatus(string $status) Return the first Role filtered by the status column
  * @method Role findOneByDescription(string $description) Return the first Role filtered by the description column
+ * @method Role findOneByStatus(string $status) Return the first Role filtered by the status column
  * @method Role findOneByValidFrom(string $valid_from) Return the first Role filtered by the valid_from column
  * @method Role findOneByValidUntil(string $valid_until) Return the first Role filtered by the valid_until column
  * @method Role findOneByCreatedBy(int $created_by) Return the first Role filtered by the created_by column
@@ -60,8 +60,8 @@ use ISG\ProjectSubmissionAppBundle\Model\User;
  * @method Role findOneByModifiedOn(string $modified_on) Return the first Role filtered by the modified_on column
  *
  * @method array findById(int $id) Return Role objects filtered by the id column
- * @method array findByStatus(string $status) Return Role objects filtered by the status column
  * @method array findByDescription(string $description) Return Role objects filtered by the description column
+ * @method array findByStatus(string $status) Return Role objects filtered by the status column
  * @method array findByValidFrom(string $valid_from) Return Role objects filtered by the valid_from column
  * @method array findByValidUntil(string $valid_until) Return Role objects filtered by the valid_until column
  * @method array findByCreatedBy(int $created_by) Return Role objects filtered by the created_by column
@@ -155,7 +155,7 @@ abstract class BaseRoleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `STATUS`, `DESCRIPTION`, `VALID_FROM`, `VALID_UNTIL`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `Role` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `DESCRIPTION`, `STATUS`, `VALID_FROM`, `VALID_UNTIL`, `CREATED_BY`, `CREATED_ON`, `MODIFIED_BY`, `MODIFIED_ON` FROM `Role` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -272,35 +272,6 @@ abstract class BaseRoleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the status column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
-     * $query->filterByStatus('%fooValue%'); // WHERE status LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $status The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return RoleQuery The current query, for fluid interface
-     */
-    public function filterByStatus($status = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($status)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $status)) {
-                $status = str_replace('*', '%', $status);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(RolePeer::STATUS, $status, $comparison);
-    }
-
-    /**
      * Filter the query on the description column
      *
      * Example usage:
@@ -327,6 +298,35 @@ abstract class BaseRoleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(RolePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the status column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
+     * $query->filterByStatus('%fooValue%'); // WHERE status LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $status The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return RoleQuery The current query, for fluid interface
+     */
+    public function filterByStatus($status = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($status)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $status)) {
+                $status = str_replace('*', '%', $status);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(RolePeer::STATUS, $status, $comparison);
     }
 
     /**

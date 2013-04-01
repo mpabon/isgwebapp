@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'Role' table.
+ * This class defines the structure of the 'AppStatus' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.ISG.ProjectSubmissionAppBundle.Model.map
  */
-class RoleTableMap extends TableMap
+class AppstatusTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.ISG.ProjectSubmissionAppBundle.Model.map.RoleTableMap';
+    const CLASS_NAME = 'src.ISG.ProjectSubmissionAppBundle.Model.map.AppstatusTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,21 +36,16 @@ class RoleTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('Role');
-        $this->setPhpName('Role');
-        $this->setClassname('ISG\\ProjectSubmissionAppBundle\\Model\\Role');
+        $this->setName('AppStatus');
+        $this->setPhpName('Appstatus');
+        $this->setClassname('ISG\\ProjectSubmissionAppBundle\\Model\\Appstatus');
         $this->setPackage('src.ISG.ProjectSubmissionAppBundle.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', true, 50, null);
-        $this->getColumn('DESCRIPTION', false)->setPrimaryString(true);
-        $this->addColumn('STATUS', 'Status', 'VARCHAR', true, 50, null);
-        $this->getColumn('STATUS', false)->setPrimaryString(true);
-        $this->addColumn('VALID_FROM', 'ValidFrom', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VALID_UNTIL', 'ValidUntil', 'TIMESTAMP', false, null, null);
-        $this->addColumn('CREATED_BY', 'CreatedBy', 'INTEGER', false, null, null);
-        $this->addColumn('CREATED_ON', 'CreatedOn', 'TIMESTAMP', false, null, null);
+        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 100, null);
+        $this->addColumn('ACTIVE_FROM', 'ActiveFrom', 'TIMESTAMP', false, null, null);
+        $this->addColumn('ACTIVE_UNTILL', 'ActiveUntill', 'TIMESTAMP', false, null, null);
         $this->addColumn('MODIFIED_BY', 'ModifiedBy', 'INTEGER', false, null, null);
         $this->addColumn('MODIFIED_ON', 'ModifiedOn', 'TIMESTAMP', false, null, null);
         // validators
@@ -61,7 +56,6 @@ class RoleTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('User', 'ISG\\ProjectSubmissionAppBundle\\Model\\User', RelationMap::ONE_TO_MANY, array('id' => 'role_id', ), 'CASCADE', 'CASCADE', 'Users');
     } // buildRelations()
 
-} // RoleTableMap
+} // AppstatusTableMap
